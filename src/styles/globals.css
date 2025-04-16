@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom global styles */
+html, 
+body {
+  @apply min-h-screen;
+}
+
+/* RTL support */
+[dir="rtl"] {
+  text-align: right;
+} 

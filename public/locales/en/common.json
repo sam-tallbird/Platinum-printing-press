@@ -1,0 +1,16 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services",
+    "products": "Products",
+    "contact": "Contact Us",
+    "ourWork": "Our Work"
+  },
+  "footer": {
+    "copyright": "© 2025 Platinum Printing Press. All rights reserved."
+  },
+  "content": {
+    "placeholder": "This is a placeholder text that will be replaced with actual content."
+  }
+} 
