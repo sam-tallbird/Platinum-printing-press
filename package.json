@@ -13,6 +13,7 @@
   "description": "Platinum Printing Press Next.js website",
   "dependencies": {
     "autoprefixer": "^10.4.15",
+    "gsap": "^3.12.7",
     "i18next": "^23.2.11",
     "next": "^13.4.19",
     "next-i18next": "^14.0.0",

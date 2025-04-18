@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-md w-full" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <nav className="fixed top-0 left-0 right-0 bg-gray-50/70 dark:bg-gray-900/70 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 z-50" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <div className="w-full px-0 sm:px-3">
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0 flex items-center ps-6">
@@ -42,10 +42,10 @@ const Navbar = () => {
                 <Link
                   key={link.path}
                   href={link.path}
-                  className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
                     router.pathname === link.path
-                      ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      ? 'bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-900 dark:text-white'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 hover:backdrop-blur-sm hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
                   {t(link.i18nKey)}
@@ -63,7 +63,7 @@ const Navbar = () => {
             <ThemeToggle />
             <button
               onClick={toggleMobileMenu}
-              className="ms-3 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none"
+              className="ms-3 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 focus:outline-none transition-all"
               aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
@@ -93,23 +93,23 @@ const Navbar = () => {
       </div>
 
       {/* Mobile menu, show/hide based on menu state */}
-      <div className={`${mobileMenuOpen ? 'block' : 'hidden'} md:hidden`}>
+      <div className={`${mobileMenuOpen ? 'block' : 'hidden'} md:hidden absolute w-full bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 shadow-lg`}>
         <div className="px-6 pt-2 pb-3 space-y-1">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               href={link.path}
-              className={`block px-3 py-2 rounded-md text-base font-medium ${
+              className={`block px-3 py-2 rounded-md text-base font-medium transition-all ${
                 router.pathname === link.path
-                  ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
-                  : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                  ? 'bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-900 dark:text-white'
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 hover:backdrop-blur-sm hover:text-gray-900 dark:hover:text-white'
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               {t(link.i18nKey)}
             </Link>
           ))}
-          <div className="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 pb-3 border-t border-gray-200/50 dark:border-gray-700/50">
             <div className="flex items-center px-6">
               <LanguageSwitcher />
             </div>

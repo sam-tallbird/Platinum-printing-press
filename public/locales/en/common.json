@@ -12,5 +12,40 @@
   },
   "content": {
     "placeholder": "This is a placeholder text that will be replaced with actual content."
+  },
+  "services": {
+    "heroTitle": "Premium Printing Services",
+    "heroSubtitle": "Crafting exceptional print materials with precision, quality, and innovation",
+    "exploreButton": "Explore Our Services",
+    "sectionTitle": "Our Premium Printing Solutions",
+    "sectionDescription": "Discover our comprehensive range of printing services designed to meet all your needs, from small business cards to massive trade show displays.",
+    "learnMore": "Learn more",
+    "ctaTitle": "Ready to Start Your Next Printing Project?",
+    "ctaText": "Contact our team today to discuss your printing needs and get a personalized quote for your project.",
+    "ctaButton": "Contact Us",
+    "01": {
+      "title": "Digital Printing",
+      "description": "Digital printing delivers flexible, high‑quality output, empowering short‑run production with vibrant color accuracy, seamless variable‑data personalization, and same‑day turnaround, enabling businesses to respond quickly, test campaigns, and elevate brand effortlessly."
+    },
+    "02": {
+      "title": "Offset Printing",
+      "description": "Offset printing delivers high‑volume runs with consistent color and favorable unit costs, leveraging modern plate technology and rigorous quality control to supply materials ideal for catalogs, magazines, books, and brochures."
+    },
+    "03": {
+      "title": "Large‑Format Printing",
+      "description": "Large‑format printing delivers posters, banners, and displays in impressive dimensions, using UV‑resistant inks and durable substrates to ensure vivid imagery, weatherproofing, and lasting presence at events, stores, and trade shows."
+    },
+    "04": {
+      "title": "Finishing & Packaging",
+      "description": "Finishing and packaging services refine printed materials through precision cutting, binding, laminating, coatings, and die‑folding, integrating custom boxes or sleeves to protect, enhance, and present products with polished, retail‑ready appeal."
+    },
+    "05": {
+      "title": "Graphic Design",
+      "description": "Graphic design specialists craft concepts embodying brand identity, blending typography, color theory, and aesthetics to deliver cohesive logos, marketing collateral, and pieces that engage audiences, strengthen recognition, and enhance clarity."
+    },
+    "06": {
+      "title": "Custom Packaging Solutions",
+      "description": "Custom packaging solutions merge design and engineering to create boxes, inserts, or sleeves that protect products, enhance impact, amplify branding, and deliver unboxing experiences that delight customers and foster purchases."
+    }
   }
 } 
