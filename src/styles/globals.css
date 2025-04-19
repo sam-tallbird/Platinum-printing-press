@@ -21,4 +21,12 @@ body {
 
 .animate-fade-in {
   animation: fadeIn 1s ease forwards;
+}
+
+/* Masonry Grid Styles - REMOVED */
+
+/* Style your items */
+.my-masonry-grid_column > div {
+  /* Ensure items have bottom margin if needed, but WorkImageCard already has mb-4/mb-6 */
+  /* margin-bottom: 16px; */ 
 } 

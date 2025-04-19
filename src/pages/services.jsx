@@ -662,20 +662,24 @@ export default function Services() {
 
       {/* Services introduction */}
       <section className="py-20 bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-7xl mx-6 px-0 sm:px-3">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900 dark:text-white">
-             {t('services.sectionTitle', 'Our Premium Printing Solutions')}
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-7xl font-bold mb-8 text-gray-900 dark:text-white leading-tight">
+             <span>{t('services.sectionTitle.line1', 'Our Premium')}</span>
+             <br />
+             <span>{t('services.sectionTitle.line2', 'Printing Solutions')}</span>
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-40 ">
-            <div className={`${isRTL ? 'ps-0' : 'pe-4'}`}>
-              <p className="text-base leading-relaxed tracking-wide text-gray-600 dark:text-gray-300 max-w-prose">
-                {t('services.sectionDescription1', 'At Platinum Printing Press, every project begins with a simple promise: we treat your brand as meticulously as we treat our own. From lightning-quick digital runs for last-minute business cards to precision offset jobs that make annual reports gleam, our press hall is equipped with the latest Heidelberg and Ricoh technology to deliver flawless colour fidelity on every sheet. Need to grab attention at a trade fair? Our wide-format division prints towering banners, seamless fabric backdrops and rigid display boards that arrive ready to hang, while our specialty finishing suite adds tactile luxury with soft-touch laminates, spot UV gloss, metallic foils and die-cut silhouettes that turn heads before a single word is read. Variable-data tools effortlessly personalise postcards, loyalty coupons and mail-merge catalogues, letting you speak to each customer as if they were the only one on your list.')}
+          <div className="grid grid-cols-1 font-bold md:grid-cols-2 gap-12">
+            <div className={`${isRTL ? 'ps-0' : 'pe-4'} prose prose-2xl dark:prose-invert max-w-10`}>
+              <p className="text-3xl">
+                <span>{t('services.sectionDescription1.part1', 'At Platinum Printing Press, every project begins with a simple promise:')}</span>
+                <br />
+                <span>{t('services.sectionDescription1.part2', ' we treat your brand as meticulously as we treat our own.')}</span>
               </p>
             </div>
             
-            <div className={`${isRTL ? 'pe-0' : 'ps'  }`}>
-              <p className="text-base leading-relaxed tracking-wide text-gray-600 dark:text-gray-300 max-w-prose">
+            <div className={`${isRTL ? 'pe-0' : 'ps-4'} prose prose-md font-normal dark:prose-invert max-w-none`}>
+              <p>
                 {t('services.sectionDescription2', 'Yet machinery is only half the story. Our in-house pre-press artists re-touch, proof and colour-match your artwork so what you approve onscreen is exactly what lands in your hands, while our sustainability team sources FSC-certified papers, soy-based inks and recyclable packaging to help you print responsibly without sacrificing vibrancy or durability. Time-critical launch? A dedicated account manager tracks your order in real time, coordinating around-the-clock production shifts and nationwide logistics so tight deadlines stay on schedule. Whether you are rolling out a boutique stationery line, refreshing point-of-sale displays across multiple branches or unveiling a stadium-sized stage backdrop, we scale seamlessly, delivering consistent quality from the very first proof to the final pallet. Put simply, Platinum Printing Press is your single destination for creative ideas, industrial muscle and white-glove service - transforming ink and paper into experiences that endure.')}
               </p>
             </div>
@@ -708,7 +712,7 @@ export default function Services() {
                   {t(`services.${services[0].id}.title`, services[0].title)}
                 </h3>
                 <div>
-                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-xl">
+                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
                     {t(`services.${services[0].id}.description`, services[0].description)}
                   </p>
                   <Link href={`/services/${services[0].id.toLowerCase()}`} className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium flex items-center text-lg md:text-xl">
@@ -744,7 +748,7 @@ export default function Services() {
                   {t(`services.${services[1].id}.title`, services[1].title)}
                 </h3>
                 <div>
-                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-xl">
+                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
                     {t(`services.${services[1].id}.description`, services[1].description)}
                   </p>
                   <Link href={`/services/${services[1].id.toLowerCase()}`} className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium flex items-center text-lg md:text-xl">
@@ -780,7 +784,7 @@ export default function Services() {
                   {t(`services.${services[2].id}.title`, services[2].title)}
                 </h3>
                 <div>
-                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-xl">
+                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
                     {t(`services.${services[2].id}.description`, services[2].description)}
                   </p>
                   <Link href={`/services/${services[2].id.toLowerCase()}`} className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium flex items-center text-lg md:text-xl">
@@ -816,7 +820,7 @@ export default function Services() {
                   {t(`services.${services[3].id}.title`, services[3].title)}
                 </h3>
                 <div>
-                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-xl">
+                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
                     {t(`services.${services[3].id}.description`, services[3].description)}
                   </p>
                   <Link href={`/services/${services[3].id.toLowerCase()}`} className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium flex items-center text-lg md:text-xl">
@@ -852,7 +856,7 @@ export default function Services() {
                   {t(`services.${services[4].id}.title`, services[4].title)}
                 </h3>
                 <div>
-                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-xl">
+                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
                     {t(`services.${services[4].id}.description`, services[4].description)}
                   </p>
                   <Link href={`/services/${services[4].id.toLowerCase()}`} className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium flex items-center text-lg md:text-xl">
@@ -888,7 +892,7 @@ export default function Services() {
                   {t(`services.${services[5].id}.title`, services[5].title)}
                 </h3>
                 <div>
-                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-xl">
+                  <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
                     {t(`services.${services[5].id}.description`, services[5].description)}
                   </p>
                   <Link href={`/services/${services[5].id.toLowerCase()}`} className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium flex items-center text-lg md:text-xl">
