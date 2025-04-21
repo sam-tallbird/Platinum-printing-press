@@ -59,59 +59,66 @@ export default function Home() {
   const threeImageSectionRef = useRef(null); // Ref for the three image section
   const serviceCarouselSectionRef = useRef(null); // Ref for the service carousel section
   const scrollContainerRef = useRef(null); // Ref for the horizontal scroll container
-  const autoScrollTween = useRef(null); // Ref to store the auto-scroll tween
   const lenis = useLenis(); // Get Lenis instance
 
   // Define the wheel handler separately
   const handleManualWheelScroll = (event) => {
     const scrollContainer = scrollContainerRef.current;
-    if (scrollContainer && lenis) { 
-      const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-      const currentScrollLeft = scrollContainer.scrollLeft;
-      // Adjust scroll direction based on locale
-      const scrollDirectionMultiplier = locale === 'ar' ? -1 : 1; 
-      const scrollAmount = event.deltaY * 1.5 * scrollDirectionMultiplier;
-      const threshold = 1; 
+    if (!scrollContainer || !lenis) return; // Early exit if refs aren't ready
 
-      let preventDefault = false;
-      // Adjust boundary checks based on locale
-      if (locale === 'ar') {
-        // RTL: Scrolling means decreasing scrollLeft (visually right)
-        // or increasing scrollLeft (visually left)
-        if (scrollAmount < 0 && currentScrollLeft > threshold) { // Scrolling right (visually), not at the end (left edge)
-          preventDefault = true;
-        } else if (scrollAmount > 0 && currentScrollLeft < maxScrollLeft - threshold) { // Scrolling left (visually), not at the start (right edge)
-          preventDefault = true;
-        }
-      } else {
-        // LTR (existing logic)
-        if (scrollAmount > 0 && currentScrollLeft < maxScrollLeft - threshold) { // Scrolling right, not at the end
-          preventDefault = true;
-        } else if (scrollAmount < 0 && currentScrollLeft > threshold) { // Scrolling left, not at the beginning
-          preventDefault = true;
-        }
-      }
+    // --- Viewport Visibility Check --- 
+    const rect = scrollContainer.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+    const visibilityThreshold = 1; // Require 75% visibility
+    const isSufficientlyVisible = (visibleHeight / rect.height) >= visibilityThreshold;
 
-      if (preventDefault) {
-        event.preventDefault(); 
-        lenis.stop(); 
-
-        if (autoScrollTween.current) {
-            autoScrollTween.current.kill();
-            autoScrollTween.current = null;
-        }
-        
-        gsap.to(scrollContainer, {
-          scrollLeft: currentScrollLeft + scrollAmount,
-          duration: 0.3,
-          ease: 'power1.out',
-          overwrite: 'auto',
-          onComplete: () => {
-            lenis.start(); 
-          }
-        });
-      } 
+    // If container is not sufficiently visible, allow default vertical scroll
+    if (!isSufficientlyVisible) {
+      return; 
     }
+    // --- End Visibility Check ---
+      
+    const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+    const currentScrollLeft = scrollContainer.scrollLeft;
+    const scrollDirectionMultiplier = locale === 'ar' ? -1 : 1; 
+    const scrollAmount = event.deltaY * 5  * scrollDirectionMultiplier;
+    const threshold = 30; // Keep the boundary threshold for start/end release
+
+    let preventDefault = false;
+    // Adjust boundary checks based on locale
+    if (locale === 'ar') {
+      // RTL: Scrolling means decreasing scrollLeft (visually right)
+      // or increasing scrollLeft (visually left)
+      if (scrollAmount < 0 && currentScrollLeft > threshold) { // Scrolling right (visually), not at the end (left edge)
+        preventDefault = true;
+      } else if (scrollAmount > 0 && currentScrollLeft < maxScrollLeft - threshold) { // Scrolling left (visually), not at the start (right edge)
+        preventDefault = true;
+      }
+    } else {
+      // LTR (existing logic)
+      if (scrollAmount > 0 && currentScrollLeft < maxScrollLeft - threshold) { // Scrolling right, not at the end
+        preventDefault = true;
+      } else if (scrollAmount < 0 && currentScrollLeft > threshold) { // Scrolling left, not at the beginning
+        preventDefault = true;
+      }
+    }
+
+    if (preventDefault) {
+      event.preventDefault(); 
+      lenis.stop(); 
+      
+      // Re-add the GSAP animation for manual scroll
+      gsap.to(scrollContainer, {
+        scrollLeft: currentScrollLeft + scrollAmount,
+        duration: 0.3, // Adjust duration as needed
+        ease: 'power1.out', // Adjust ease as needed
+        overwrite: 'auto',
+        onComplete: () => {
+          lenis.start(); 
+        }
+      });
+    } 
   };
 
   useEffect(() => {
@@ -187,53 +194,19 @@ export default function Home() {
     const scrollContainer = scrollContainerRef.current;
 
     const handleMouseEnter = () => {
+        // Only add the wheel listener on enter
         scrollContainer?.addEventListener('wheel', handleManualWheelScroll, { passive: false });
-        
-        if (!scrollContainer) return;
-        const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-        const currentScroll = scrollContainer.scrollLeft;
-        const scrollSpeed = 50;
-        let remainingScroll = 0;
-        let targetScroll = 0;
-
-        // Determine auto-scroll target and remaining distance based on locale
-        if (locale === 'ar') {
-          targetScroll = maxScroll; // RTL: Scroll visually LEFT towards the max scrollLeft value
-          remainingScroll = maxScroll - currentScroll; // Calculate remaining distance towards maxScrollLeft
-        } else {
-          targetScroll = maxScroll; // LTR: Scroll visually LEFT towards the max scrollLeft value
-          remainingScroll = maxScroll - currentScroll;
-        }
-
-        // Ensure remainingScroll is not negative (can happen with rounding)
-        remainingScroll = Math.max(0, remainingScroll); 
-
-        if (remainingScroll > 0) {
-            if (autoScrollTween.current) autoScrollTween.current.kill();
-            const duration = remainingScroll / scrollSpeed;
-            autoScrollTween.current = gsap.to(scrollContainer, {
-                scrollLeft: targetScroll, // Animate towards the locale-specific target
-                duration: duration, 
-                ease: 'none', 
-                overwrite: 'auto'
-            });
-        }
     };
 
     const handleMouseLeave = () => {
         // Remove manual wheel listener when mouse leaves
         scrollContainer?.removeEventListener('wheel', handleManualWheelScroll);
-
-        // Stop auto-scroll (existing logic)
-        if (autoScrollTween.current) {
-            autoScrollTween.current.kill();
-            autoScrollTween.current = null;
-        }
     };
 
-    // Attach hover listeners to the scroll container
+    // Attach listeners for manual scroll only
     if (scrollContainer) { 
       scrollContainer.addEventListener('mouseenter', handleMouseEnter);
+      // Remove mousemove listener
       scrollContainer.addEventListener('mouseleave', handleMouseLeave);
     }
 
@@ -242,28 +215,25 @@ export default function Home() {
       if (textScrollTrigger) {
         textScrollTrigger.kill();
       }
-      // Kill the ScrollTrigger associated with the image tween
       if (imageScaleTween && imageScaleTween.scrollTrigger) { 
         imageScaleTween.scrollTrigger.kill(); 
       }
-      // Kill the ScrollTrigger associated with the service card tween
       if (serviceCardTween && serviceCardTween.scrollTrigger) {
         serviceCardTween.scrollTrigger.kill();
       }
-      // Kill any remaining tweens on the elements
-      gsap.killTweensOf(['.belief-line', '.scale-image-item', '.service-image-mask', scrollContainer]);
+      // Remove scrollContainer from killTweensOf if no tweens target it anymore
+      gsap.killTweensOf(['.belief-line', '.scale-image-item', '.service-image-mask']);
       
-      // Remove hover listeners and ensure wheel listener is removed
+      // Remove listeners
       if (scrollContainer) { 
         scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
+        // Remove mousemove listener removal
         scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
         scrollContainer.removeEventListener('wheel', handleManualWheelScroll); 
       }
-      // Kill auto-scroll tween if active
-      if (autoScrollTween.current) {
-          autoScrollTween.current.kill();
-      }
-      // Ensure Lenis is running when component unmounts, just in case
+      
+      // Remove stopAutoScroll call
+      
       lenis?.start();
     };
   }, [t, lenis, locale]); // Re-run effect if translation changes
@@ -357,7 +327,7 @@ export default function Home() {
       {/* === End Three Image Section === */}
 
       {/* === Service Carousel Section === */}
-      <section ref={serviceCarouselSectionRef} className="pt-6 md:pt-8 lg:pt-10 pb-12 md:pb-16 lg:pb-20">
+      <section ref={serviceCarouselSectionRef} className="pt-12 md:pt-16 lg:pt-20 pb-12 md:pb-16 lg:pb-20">
         {/* Container with side padding */}
         <div className="mx-auto px-9">
            {/* Flex container for Title and View All button */}
