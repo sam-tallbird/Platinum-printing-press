@@ -47,5 +47,19 @@
       "title": "Custom Packaging Solutions",
       "description": "Custom packaging solutions merge design and engineering to create boxes, inserts, or sleeves that protect products, enhance impact, amplify branding, and deliver unboxing experiences that delight customers and foster purchases."
     }
+  },
+  "contact": {
+    "contactInfoTitle": "Contact Information",
+    "emailTitle": "Email",
+    "phoneTitle": "Phone",
+    "addressTitle": "Address",
+    "addressLine1": "Dummy Street 123",
+    "addressLine2": "Industrial Area",
+    "addressLine3": "Dubai, UAE",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "message": "Message content",
+    "submitInquiry": "SUBMIT INQUIRY"
   }
 } 

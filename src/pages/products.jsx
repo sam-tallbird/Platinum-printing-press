@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next';
 import ProductCard from '../components/products/ProductCard.jsx';
 import Image from 'next/image';
 import ProductSearchBar from '../components/products/ProductSearchBar';
+import GridDistortion from '../components/effects/GridDistortion';
 
 export default function Products() {
   const router = useRouter();
@@ -40,15 +41,17 @@ export default function Products() {
     <div dir={isRTL ? 'rtl' : 'ltr'} className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       {/* === Updated Hero Section === */}
       <section className="relative w-full h-[40vh] overflow-hidden bg-gray-700"> {/* Added fallback bg */}
-        <Image
-          src="/images/product-temp-img/2ddf381c42ad7a041bb42859630e2e3e.jpg" 
-          alt={t('products.heroAlt', 'High-quality printing products showcase')} 
-          fill
-          priority 
-          className="object-cover object-center opacity-90 dark:opacity-70" // Slightly reduced opacity
+        <GridDistortion 
+           imageSrc="/images/xxd1.jpg" // Updated image source
+           className="absolute inset-0 opacity-90 dark:opacity-70" // Fill container, retain opacity
+           // Adjust props as needed:
+           // grid={15} // Default grid size
+           mouse={0.2} // Increased mouse influence radius (default: 0.1)
+           // strength={0.15} // Default strength
+           // relaxation={0.9} // Default relaxation
         />
-        {/* Text Overlay */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-gradient-to-t from-black/60 via-black/30 to-transparent">
+        {/* Text Overlay - Add pointer-events-none to allow hover on GridDistortion below */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-gradient-to-t from-black/60 via-black/30 to-transparent pointer-events-none">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight max-w-4xl">
             {t('products.heroTitle', 'Premium Print Products, Tailored for Your Brand')}
           </h1>

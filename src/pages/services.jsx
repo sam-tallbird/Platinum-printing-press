@@ -7,6 +7,7 @@ import Link from 'next/link';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/dist/ScrollToPlugin';
+import ProductCard from '../components/products/ProductCard.jsx';
 
 // Register plugins outside of component
 if (typeof window !== 'undefined') {
@@ -637,25 +638,26 @@ export default function Services() {
           </div>
         </div>
         
-        {/* Image side with mask reveal animation */}
+        {/* Image side - Reverted */}
         <div className={`hidden md:block absolute top-0 ${isRTL ? 'left-0' : 'right-0'} w-1/2 h-full overflow-hidden`}>
           <div className="relative w-full h-full">
-            <Image 
-              src="/images/digital-printing.png" 
-              alt="Printing services" 
-              fill
-              priority
-              className="object-cover object-center"
-            />
-            
-            {/* Mask element that reveals the image */}
-            <div 
-              ref={heroImageMaskRef}
-              className="absolute inset-0 bg-stone-50 dark:bg-gray-900 transition-colors duration-500 ease-in-out z-10"
-            ></div>
-            
-            {/* Dark mode overlay for better contrast with image */}
-            <div className="absolute inset-0 bg-black opacity-0 dark:opacity-30 transition-opacity duration-500 ease-in-out"></div>
+             {/* Mask element that reveals the image */}
+             <div 
+               ref={heroImageMaskRef}
+               className="absolute inset-0 bg-stone-50 dark:bg-gray-900 transition-colors duration-500 ease-in-out z-10"
+             ></div>
+             
+             {/* Original Image component */}
+             <Image 
+               src="/images/digital-printing.png" 
+               alt="Printing services" // Make sure alt text is appropriate
+               fill
+               priority
+               className="object-cover object-center"
+             />
+ 
+             {/* Dark mode overlay */}
+             <div className="absolute inset-0 bg-black opacity-0 dark:opacity-30 transition-opacity duration-500 ease-in-out z-5"></div>
           </div>
         </div>
       </section>
@@ -671,7 +673,7 @@ export default function Services() {
           
           <div className="grid grid-cols-1 font-bold md:grid-cols-2 gap-12">
             <div className={`${isRTL ? 'ps-0' : 'pe-4'} prose prose-2xl dark:prose-invert max-w-10`}>
-              <p className="text-3xl">
+              <p className="text-xl">
                 <span>{t('services.sectionDescription1.part1', 'At Platinum Printing Press, every project begins with a simple promise:')}</span>
                 <br />
                 <span>{t('services.sectionDescription1.part2', ' we treat your brand as meticulously as we treat our own.')}</span>
