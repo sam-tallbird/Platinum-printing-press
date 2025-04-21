@@ -13,6 +13,13 @@
   "content": {
     "placeholder": "This is a placeholder text that will be replaced with actual content."
   },
+  "home": {
+    "beliefStatement_line1": "At Platinum We believe that printing is an essential",
+    "beliefStatement_line2": "part of any project's identity, and our goal is to reflect",
+    "beliefStatement_line3": "your message and vision in the best possible way.",
+    "servicesTitle": "SERVICES",
+    "viewAll": "VIEW ALL"
+  },
   "services": {
     "heroTitle": "Premium Printing Services",
     "heroSubtitle": "Crafting exceptional print materials with precision, quality, and innovation",

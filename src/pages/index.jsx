@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import { useLenis } from 'lenis/react';
 
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
@@ -59,6 +60,59 @@ export default function Home() {
   const serviceCarouselSectionRef = useRef(null); // Ref for the service carousel section
   const scrollContainerRef = useRef(null); // Ref for the horizontal scroll container
   const autoScrollTween = useRef(null); // Ref to store the auto-scroll tween
+  const lenis = useLenis(); // Get Lenis instance
+
+  // Define the wheel handler separately
+  const handleManualWheelScroll = (event) => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer && lenis) { 
+      const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      const currentScrollLeft = scrollContainer.scrollLeft;
+      // Adjust scroll direction based on locale
+      const scrollDirectionMultiplier = locale === 'ar' ? -1 : 1; 
+      const scrollAmount = event.deltaY * 1.5 * scrollDirectionMultiplier;
+      const threshold = 1; 
+
+      let preventDefault = false;
+      // Adjust boundary checks based on locale
+      if (locale === 'ar') {
+        // RTL: Scrolling means decreasing scrollLeft (visually right)
+        // or increasing scrollLeft (visually left)
+        if (scrollAmount < 0 && currentScrollLeft > threshold) { // Scrolling right (visually), not at the end (left edge)
+          preventDefault = true;
+        } else if (scrollAmount > 0 && currentScrollLeft < maxScrollLeft - threshold) { // Scrolling left (visually), not at the start (right edge)
+          preventDefault = true;
+        }
+      } else {
+        // LTR (existing logic)
+        if (scrollAmount > 0 && currentScrollLeft < maxScrollLeft - threshold) { // Scrolling right, not at the end
+          preventDefault = true;
+        } else if (scrollAmount < 0 && currentScrollLeft > threshold) { // Scrolling left, not at the beginning
+          preventDefault = true;
+        }
+      }
+
+      if (preventDefault) {
+        event.preventDefault(); 
+        lenis.stop(); 
+
+        if (autoScrollTween.current) {
+            autoScrollTween.current.kill();
+            autoScrollTween.current = null;
+        }
+        
+        gsap.to(scrollContainer, {
+          scrollLeft: currentScrollLeft + scrollAmount,
+          duration: 0.3,
+          ease: 'power1.out',
+          overwrite: 'auto',
+          onComplete: () => {
+            lenis.start(); 
+          }
+        });
+      } 
+    }
+  };
 
   useEffect(() => {
     // --- Belief Text Animation --- 
@@ -70,7 +124,11 @@ export default function Home() {
           trigger: beliefTextRef.current,
           start: "top 80%",
           onEnter: () => gsap.from(lines, { 
-            y: 50, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.2 
+            y: 50, 
+            opacity: 0, 
+            duration: 0.8, 
+            ease: 'power3.out', 
+            stagger: 0.4
           }),
         });
       }
@@ -125,79 +183,56 @@ export default function Home() {
       }
     }
 
-    // --- Horizontal Scroll on Wheel --- 
-    const carouselSection = serviceCarouselSectionRef.current; // Keep ref for triggers if needed, but not for listeners
+    // --- Horizontal Scroll Management --- 
     const scrollContainer = scrollContainerRef.current;
 
-    const handleWheelScroll = (event) => {
-      if (scrollContainer) {
-        const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-        const currentScrollLeft = scrollContainer.scrollLeft;
-        const scrollAmount = event.deltaY * 1.5; // Adjust sensitivity
-        const threshold = 1; // Pixel threshold - vertical scroll starts 1px before the end
-
-        // Check if we should prevent default vertical scroll
-        let preventDefault = false;
-        // Check if there's more than 'threshold' pixels left to scroll right
-        if (scrollAmount > 0 && currentScrollLeft < maxScrollLeft - threshold) { 
-          preventDefault = true;
-        // Check if there's more than 'threshold' pixels left to scroll left
-        } else if (scrollAmount < 0 && currentScrollLeft > threshold) { 
-          preventDefault = true;
-        }
-
-        if (preventDefault) {
-          event.preventDefault();
-          // Kill auto-scroll if wheel is used
-          if (autoScrollTween.current) {
-              autoScrollTween.current.kill();
-              autoScrollTween.current = null;
-          }
-          gsap.to(scrollContainer, {
-            scrollLeft: currentScrollLeft + scrollAmount,
-            duration: 0.3,
-            ease: 'power1.out',
-            overwrite: 'auto'
-          });
-        } 
-        // If preventDefault is false, the browser's default vertical scroll will happen
-      }
-    };
-
-    // --- Auto Scroll on Hover --- 
-    const scrollSpeed = 50; // Pixels per second
-
     const handleMouseEnter = () => {
+        scrollContainer?.addEventListener('wheel', handleManualWheelScroll, { passive: false });
+        
         if (!scrollContainer) return;
         const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
         const currentScroll = scrollContainer.scrollLeft;
-        const remainingScroll = maxScroll - currentScroll;
+        const scrollSpeed = 50;
+        let remainingScroll = 0;
+        let targetScroll = 0;
+
+        // Determine auto-scroll target and remaining distance based on locale
+        if (locale === 'ar') {
+          targetScroll = maxScroll; // RTL: Scroll visually LEFT towards the max scrollLeft value
+          remainingScroll = maxScroll - currentScroll; // Calculate remaining distance towards maxScrollLeft
+        } else {
+          targetScroll = maxScroll; // LTR: Scroll visually LEFT towards the max scrollLeft value
+          remainingScroll = maxScroll - currentScroll;
+        }
+
+        // Ensure remainingScroll is not negative (can happen with rounding)
+        remainingScroll = Math.max(0, remainingScroll); 
 
         if (remainingScroll > 0) {
-            // Kill any existing tween first
-            if (autoScrollTween.current) {
-                autoScrollTween.current.kill();
-            }
+            if (autoScrollTween.current) autoScrollTween.current.kill();
             const duration = remainingScroll / scrollSpeed;
             autoScrollTween.current = gsap.to(scrollContainer, {
-                scrollLeft: maxScroll,
-                duration: duration,
-                ease: 'none', // Constant speed
-                overwrite: 'auto' // Allow other tweens to overwrite
+                scrollLeft: targetScroll, // Animate towards the locale-specific target
+                duration: duration, 
+                ease: 'none', 
+                overwrite: 'auto'
             });
         }
     };
 
     const handleMouseLeave = () => {
+        // Remove manual wheel listener when mouse leaves
+        scrollContainer?.removeEventListener('wheel', handleManualWheelScroll);
+
+        // Stop auto-scroll (existing logic)
         if (autoScrollTween.current) {
             autoScrollTween.current.kill();
             autoScrollTween.current = null;
         }
     };
 
-    // Attach listeners to the scroll container instead of the section
+    // Attach hover listeners to the scroll container
     if (scrollContainer) { 
-      scrollContainer.addEventListener('wheel', handleWheelScroll, { passive: false });
       scrollContainer.addEventListener('mouseenter', handleMouseEnter);
       scrollContainer.addEventListener('mouseleave', handleMouseLeave);
     }
@@ -216,28 +251,28 @@ export default function Home() {
         serviceCardTween.scrollTrigger.kill();
       }
       // Kill any remaining tweens on the elements
-      gsap.killTweensOf('.belief-line');
-      gsap.killTweensOf('.scale-image-item');
-      gsap.killTweensOf('.service-image-mask'); // Target the new class
+      gsap.killTweensOf(['.belief-line', '.scale-image-item', '.service-image-mask', scrollContainer]);
       
-      // Remove event listeners from the scroll container
+      // Remove hover listeners and ensure wheel listener is removed
       if (scrollContainer) { 
-        scrollContainer.removeEventListener('wheel', handleWheelScroll);
         scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
         scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
+        scrollContainer.removeEventListener('wheel', handleManualWheelScroll); 
       }
       // Kill auto-scroll tween if active
       if (autoScrollTween.current) {
           autoScrollTween.current.kill();
       }
+      // Ensure Lenis is running when component unmounts, just in case
+      lenis?.start();
     };
-  }, [t]); // Re-run effect if translation changes
+  }, [t, lenis, locale]); // Re-run effect if translation changes
 
-  const beliefStatement = t('home.beliefStatement', "At Platinum We believe that printing is an essential part of any project's identity, and our goal is to reflect your message and vision in the best possible way.");
+  // Get the translated belief statement lines using separate keys
   const beliefLines = [
-    "At Platinum We believe that printing is an essential",
-    "part of any project's identity, and our goal is to reflect",
-    "your message and vision in the best possible way."
+    t('home.beliefStatement_line1', "At Platinum We believe that printing is an essential"), // Fallback text included
+    t('home.beliefStatement_line2', "part of any project's identity, and our goal is to reflect"),
+    t('home.beliefStatement_line3', "your message and vision in the best possible way.")
   ];
 
   return (
@@ -261,19 +296,17 @@ export default function Home() {
 
       {/* === New Text Section === */}
       <section className="py-12 md:py-16 lg:py-20">
-        {/* Flex container for 50/50 split, using space-x-reverse for direction */}
-        <div className="mx-auto px-9 flex flex-col md:flex-row items-center gap-8 md:gap-12 rtl:md:space-x-reverse"> {/* Use Flexbox + space-x-reverse */}
-          {/* Text: Takes 50% width */}
-          <div className="w-full md:w-1/2"> {/* Removed conditional order */}
-            <p ref={beliefTextRef} className="text-xl md:text-2xl lg:text-3xl font-bold text-black dark:text-white leading-relaxed ltr:text-left rtl:text-right overflow-hidden"> {/* Added overflow-hidden */}
+        <div className="mx-auto px-9 flex flex-col md:flex-row items-center gap-8 md:gap-12 rtl:md:space-x-reverse">
+          <div className="w-full md:w-1/2">
+            <p key={locale} ref={beliefTextRef} className="text-xl md:text-2xl lg:text-3xl font-bold text-black dark:text-white leading-relaxed ltr:text-left rtl:text-right overflow-hidden">
+              {/* Map over the array of translated lines */}
               {beliefLines.map((line, index) => (
-                <span key={index} className="belief-line block"> {/* Wrap each line in a span, display block */}
-                  {line}
+                <span key={index} className="belief-line block">
+                  {line} 
                 </span>
               ))}
             </p>
           </div>
-          {/* Logo: Takes 50% width, alignment via margin auto */}
           <div className="w-full md:w-1/2"> {/* Removed flex and justify-* */}
             <Image 
               src="/images/metalic-logo.svg"
@@ -288,7 +321,7 @@ export default function Home() {
       {/* === End New Text Section === */}
 
       {/* === Three Image Section === */}
-      <section ref={threeImageSectionRef} className="py-12 md:py-16 lg:py-20 overflow-hidden"> {/* Add ref and overflow-hidden */}
+      <section ref={threeImageSectionRef} className="pt-6 md:pt-8 lg:pt-10 pb-6 md:pb-8 lg:pb-10 overflow-hidden">
         <div className="mx-auto px-9"> {/* Side padding 36px */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3"> {/* 3 columns on md+, 12px gap */}
             {/* Image 1 */}
@@ -324,7 +357,7 @@ export default function Home() {
       {/* === End Three Image Section === */}
 
       {/* === Service Carousel Section === */}
-      <section ref={serviceCarouselSectionRef} className="py-12 md:py-16 lg:py-20">
+      <section ref={serviceCarouselSectionRef} className="pt-6 md:pt-8 lg:pt-10 pb-12 md:pb-16 lg:pb-20">
         {/* Container with side padding */}
         <div className="mx-auto px-9">
            {/* Flex container for Title and View All button */}
@@ -366,18 +399,6 @@ export default function Home() {
         </div>
       </section>
       {/* === End Service Carousel Section === */}
-
-      {/* === Existing Content (Placeholder/Original) === */}
-      <div className="py-12 bg-gray-50 dark:bg-gray-900"> {/* Added bg color for contrast */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-center mb-8">
-            {locale === 'ar' ? 'بلاتينيوم للطباعة' : 'Platinum Printing Press'}
-          </h1>
-          <p className="text-lg text-center text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            {t('content.placeholder')}
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
