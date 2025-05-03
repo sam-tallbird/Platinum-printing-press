@@ -109,10 +109,6 @@ export default function ProductDetailPage({ productData }) {
   const { openLoginModal } = useModal(); // To open login if not authenticated
   const { addToCart, isLoading: isCartLoading } = useCart(); // Get cart functions
 
-  // --- Debugging: Log received product data ---
-  console.log("Product Data Received:", JSON.stringify(productData, null, 2));
-  // --- End Debugging Log ---
-
   const [selectedOptions, setSelectedOptions] = useState({}); 
   const [openAccordion, setOpenAccordion] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

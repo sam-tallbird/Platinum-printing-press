@@ -22,9 +22,7 @@ export default function Products() {
 
   // Debounce effect for search term
   useEffect(() => {
-    console.log(`Search term changed: ${searchTerm}`); // Log search term change
     const timerId = setTimeout(() => {
-      console.log(`Debounce timer fired. Setting debounced term: ${searchTerm}`); // Log debounce firing
       setDebouncedSearchTerm(searchTerm);
     }, 500); // Delay in ms (e.g., 500ms)
 
@@ -35,7 +33,6 @@ export default function Products() {
 
   // Updated fetch function to accept search term
   const fetchProductsData = async (currentSearchTerm) => {
-    console.log(`Fetching products with term: '${currentSearchTerm}'`); // Log term received by fetch function
     setIsLoading(true);
     setError(null);
     try {
@@ -84,7 +81,6 @@ export default function Products() {
 
   // useEffect to fetch products when debounced search term changes
   useEffect(() => {
-    console.log(`Debounced term updated: '${debouncedSearchTerm}'. Triggering fetch.`); // Log fetch trigger
     fetchProductsData(debouncedSearchTerm);
   }, [debouncedSearchTerm]); // Re-run when debounced term changes
 

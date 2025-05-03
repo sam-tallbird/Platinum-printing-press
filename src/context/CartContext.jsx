@@ -19,7 +19,6 @@ export const CartProvider = ({ children }) => {
       // Don't reset cart/items here, let the fetch result dictate the state
       // setCart(null); 
       // setCartItems([]);
-      console.log(`fetchCart: Starting fetch for user: ${user.id}`); // <-- Log user ID
 
       try {
           // 1. Find user's *most recent* active cart
@@ -36,14 +35,14 @@ export const CartProvider = ({ children }) => {
 
           // <-- Log fetched cart details
           if (activeCart) {
-              console.log(`fetchCart: Found latest active cart ID: ${activeCart.id}, Created at: ${activeCart.created_at}, Status: ${activeCart.status}`); 
+              // REMOVED console.log(`fetchCart: Found latest active cart ID: ${activeCart.id}, Created at: ${activeCart.created_at}, Status: ${activeCart.status}`); 
           } else {
-               console.log(`fetchCart: Query returned no active cart.`);
+              // REMOVED console.log(`fetchCart: Query returned no active cart.`);
           }
 
           // 2. If no active cart, create one
           if (!activeCart) {
-              console.log("No active cart found, creating one for user:", user.id);
+              // console.log("No active cart found, creating one for user:", user.id); // Keep this one maybe?
               const { data: newCart, error: createError } = await supabase
                   .from('carts')
                   .insert({ user_id: user.id, status: 'active' })
@@ -229,7 +228,7 @@ export const CartProvider = ({ children }) => {
           .eq('id', existingItem.id);
 
         if (updateError) throw updateError;
-        console.log("Updated cart item quantity:", existingItem.id);
+        // REMOVED console.log("Updated cart item quantity:", existingItem.id);
       } else {
         // Insert new item
         const { error: insertError } = await supabase
@@ -242,7 +241,7 @@ export const CartProvider = ({ children }) => {
           });
 
         if (insertError) throw insertError;
-        console.log("Added new item to cart:");
+        // REMOVED console.log("Added new item to cart:");
       }
 
       // Refresh cart data after modification
@@ -260,7 +259,7 @@ export const CartProvider = ({ children }) => {
     if (!cart) return;
     setIsLoading(true);
     setError(null);
-    console.log("Attempting to remove item:", cartItemId); // Updated log
+    // REMOVED console.log("Attempting to remove item:", cartItemId);
     try {
         const { error: deleteError } = await supabase
             .from('cart_items')
@@ -271,7 +270,7 @@ export const CartProvider = ({ children }) => {
 
         if (deleteError) throw deleteError;
 
-        console.log("Successfully removed item:", cartItemId);
+        // REMOVED console.log("Successfully removed item:", cartItemId);
         // Refetch cart data to update the UI
         await fetchCart(); 
 
@@ -287,8 +286,8 @@ export const CartProvider = ({ children }) => {
      if (!cart || newQuantity < 1) return;
     setIsLoading(true);
     setError(null);
-     console.log("Placeholder: Updating quantity:", { cartItemId, newQuantity });
-     // Update logic here
+    // REMOVED console.log("Placeholder: Updating quantity:", { cartItemId, newQuantity });
+    // Update logic here
     setIsLoading(false);
       // Refetch cart after updating?
   };
@@ -306,7 +305,7 @@ export const CartProvider = ({ children }) => {
     
     try {
         // Call the database function to handle the process atomically
-        console.log(`Calling database function submit_cart_and_create_new for cart: ${cartId}`);
+        // REMOVED console.log(`Calling database function submit_cart_and_create_new for cart: ${cartId}`);
         const { error: rpcError } = await supabase.rpc('submit_cart_and_create_new', {
             cart_id_to_submit: cartId 
         });
@@ -319,7 +318,7 @@ export const CartProvider = ({ children }) => {
             throw rpcError; // Throw to be caught by outer catch
         }
         
-        console.log("Database function submit_cart_and_create_new completed successfully.");
+        // REMOVED console.log("Database function submit_cart_and_create_new completed successfully.");
         // The finally block will now call fetchCart to get the new state.
 
     } catch (err) {
@@ -332,9 +331,8 @@ export const CartProvider = ({ children }) => {
              setError(message); 
         }
     } finally {
-        console.log("createQuoteRequestRecord: Reached finally block. Preparing to call fetchCart."); // <-- Log before fetchCart
-        // ALWAYS try to fetch the latest cart state and ensure loading is false
-        console.log("Quote request process finished (or errored). Fetching current cart state...");
+        // REMOVED console.log("createQuoteRequestRecord: Reached finally block. Preparing to call fetchCart.");
+        // REMOVED console.log("Quote request process finished (or errored). Fetching current cart state...");
         try {
             await fetchCart(); 
         } catch (fetchErr) {
