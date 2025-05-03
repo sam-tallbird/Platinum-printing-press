@@ -166,7 +166,8 @@ export default function About() {
             ></div>
           </div>
           
-          <h2 className="text-6xl font-bold text-start mb-0 leading-[1.1]">
+          {/* Responsive Headline */}
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-start mb-0 leading-[1.1]">
             {/* Line 1 Container */}
             <div ref={line1ContainerRef} className="relative inline-block overflow-hidden" style={{ paddingBottom: '0.1em' }}>
               {/* Line 1 Text */}
@@ -188,18 +189,19 @@ export default function About() {
             </div>
           </h2>
 
-          <p ref={subtitleParagraphRef} className="text-xl text-start mt-0 mb-8 text-gray-600 dark:text-gray-300 max-w-3xl will-change-transform leading-snug">
+          {/* Adjusted subtitle margin slightly */}
+          <p ref={subtitleParagraphRef} className="text-xl text-start mt-0 mb-6 md:mb-8 text-gray-600 dark:text-gray-300 max-w-3xl will-change-transform leading-snug">
             {locale === 'ar' 
               ? 'حيث يلتقي الإبداع بالدقة، لضمان الجودة والاتساق في كل مرحلة من رحلة الطباعة الخاصة بك'
               : 'Where creativity meets precision, ensuring quality and consistency at every stage of your print journey'}
           </p>
         </div>
         
-        {/* Container for Image with Animation */}
+        {/* Container for Image with Animation - Responsive Height */}
         <div ref={heroImageContainerRef} className="w-full mt-4 overflow-hidden relative">
           <div className="ps-6 pe-6">
-            {/* Original container - keep relative for image positioning */}
-            <div className="relative w-full h-[600px]">
+            {/* Added responsive height */}
+            <div className="relative w-full h-[400px] md:h-[600px]">
               <Image
                 src="/images/about-us-hero.jpg"
                 alt="Printing press in action showing vibrant colors"
@@ -217,6 +219,7 @@ export default function About() {
           ></div>
         </div>
 
+        {/* Responsive margin */}
         <TextImageSection 
           imageUrl="/images/who-are-we.jpg"
           imageAlt="Vintage printing press with framed prints on wall"
@@ -226,9 +229,10 @@ export default function About() {
           imagePosition="right"
           imageWidth={750}
           imageHeight={1000}
-          className="mt-16"
+          className="mt-12 md:mt-16" // Adjusted margin
         />
 
+        {/* Responsive margin */}
         <TextImageSection 
           imageUrl="/images/our-vision.jpg"
           imageAlt="Colorful CMYK printing color palette chart"
@@ -238,9 +242,10 @@ export default function About() {
           imagePosition="left"
           imageWidth={750}
           imageHeight={1000}
-          className="mt-24"
+          className="mt-12 md:mt-24" // Adjusted margin
         />
 
+        {/* Responsive margin */}
         <TextImageSection 
           imageUrl="/images/our-mission.jpg"
           imageAlt="Modern printing equipment showing precision and quality"
@@ -248,9 +253,9 @@ export default function About() {
           paragraphs={ourMissionParagraphs}
           translations={ourMissionTranslations}
           imagePosition="right"
-          imageWidth={750}
+          imageWidth={750} 
           imageHeight={1000}
-          className="mt-24"
+          className="mt-12 md:mt-24" // Adjusted margin
         />
       </div>
     </div>

@@ -7,6 +7,41 @@
     "contact": "اتصل بنا",
     "ourWork": "أعمالنا"
   },
+  "navbar": {
+    "getStarted": "ابدأ الآن",
+    "basketAriaLabel": "سلة التسوق",
+    "profileAriaLabel": "ملف المستخدم",
+    "myAccount": "حسابي",
+    "orderHistory": "سجل الطلبات",
+    "logout": "تسجيل الخروج"
+  },
+  "auth": {
+    "login": {
+      "title": "تسجيل الدخول",
+      "closeAriaLabel": "إغلاق نافذة تسجيل الدخول",
+      "emailLabel": "عنوان البريد الإلكتروني",
+      "passwordLabel": "كلمة المرور",
+      "forgotPassword": "هل نسيت كلمة المرور؟",
+      "submitButton": "تسجيل الدخول",
+      "googleButton": "تسجيل الدخول باستخدام جوجل",
+      "separator": "أو المتابعة باستخدام",
+      "noAccount": "ليس لديك حساب؟",
+      "signUpLink": "إنشاء حساب",
+      "hidePasswordAriaLabel": "إخفاء كلمة المرور",
+      "showPasswordAriaLabel": "إظهار كلمة المرور"
+    },
+    "signup": {
+      "title": "إنشاء حساب",
+      "closeAriaLabel": "إغلاق نافذة إنشاء الحساب",
+      "usernameLabel": "اسم المستخدم",
+      "emailLabel": "عنوان البريد الإلكتروني",
+      "passwordLabel": "كلمة المرور",
+      "confirmPasswordLabel": "إعادة إدخال كلمة المرور",
+      "submitButton": "إنشاء حساب",
+      "haveAccount": "هل لديك حساب بالفعل؟",
+      "loginLink": "تسجيل الدخول"
+    }
+  },
   "footer": {
     "copyright": "© 2025 بلاتينيوم للطباعة. جميع الحقوق محفوظة."
   },
@@ -75,7 +110,9 @@
     "requestQuote": "اطلب عرض سعر",
     "pageTitle": "منتجاتنا",
     "searchLabel": "ابحث عن المنتجات",
-    "searchPlaceholder": "ابحث باسم المنتج..."
+    "searchPlaceholder": "ابحث باسم المنتج...",
+    "addToBasket": "أضف إلى السلة",
+    "added": "تمت الإضافة"
   },
   "ourWork": {
     "pageTitle": "أعمالنا",
@@ -96,5 +133,72 @@
     "email": "عنوان البريد الإلكتروني",
     "message": "محتوى الرسالة",
     "submitInquiry": "إرسال الاستفسار"
+  },
+  "confirmLogout": {
+    "title": "تأكيد تسجيل الخروج",
+    "message": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+    "confirmText": "تسجيل الخروج",
+    "cancelText": "إلغاء"
+  },
+  "account": {
+    "title": "حسابي",
+    "welcome": "!مرحباً، {{name}}",
+    "emailDisplay": "البريد الإلكتروني: {{email}}",
+    "updateUsernameTitle": "تحديث اسم المستخدم",
+    "usernameLabel": "اسم المستخدم",
+    "updateEmailTitle": "تحديث البريد الإلكتروني",
+    "emailChangeInfo": "يتطلب تغيير بريدك الإلكتروني تأكيدًا عبر عنوانيك القديم والجديد.",
+    "newEmailLabel": "البريد الإلكتروني الجديد",
+    "updatePasswordTitle": "تحديث كلمة المرور",
+    "newPasswordLabel": "كلمة المرور الجديدة",
+    "confirmPasswordLabel": "تأكيد كلمة المرور الجديدة",
+    "updateButton": "تحديث",
+    "error": {
+        "usernameRequired": "اسم المستخدم لا يمكن أن يكون فارغاً.",
+        "invalidEmail": "الرجاء إدخال عنوان بريد إلكتروني صالح.",
+        "emailUnchanged": "الرجاء إدخال عنوان بريد إلكتروني مختلف.",
+        "passwordTooShort": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.",
+        "passwordMismatch": "كلمتا المرور غير متطابقتين.",
+        "genericUpdate": "فشل التحديث."
+    },
+    "success": {
+        "usernameUpdated": "تم تحديث اسم المستخدم بنجاح!",
+        "emailChangeRequested": "تم طلب تحديث البريد الإلكتروني. يرجى مراجعة عنواني بريدك الإلكتروني القديم والجديد للحصول على روابط التأكيد.",
+        "passwordUpdated": "تم تحديث كلمة المرور بنجاح!"
+    }
+  },
+  "productDetails": {
+    "quantity": "الكمية",
+    "decreaseQuantity": "تقليل الكمية",
+    "increaseQuantity": "زيادة الكمية",
+    "currentQuantity": "الكمية الحالية",
+    "minOrder": "الحد الأدنى للطلب: {{count}}",
+    "error": {
+        "selectOptions": "الرجاء تحديد خيار لكل فئة.",
+        "addToCartFailed": "فشل إضافة المنتج إلى السلة. الرجاء المحاولة مرة أخرى."
+    },
+    "success": {
+        "addedToCart": "تمت إضافة {{quantity}} × {{productName}} إلى السلة"
+    },
+    "loading": "جار التحميل...",
+    "noDescription": "لا يوجد وصف متاح.",
+    "noOptions": "لا توجد خيارات قابلة للتخصيص لهذا المنتج."
+  },
+  "cart": {
+    "title": "سلة التسوق",
+    "loading": "جار تحميل السلة...",
+    "empty": "سلتك فارغة.",
+    "quantityLabel": "الكمية",
+    "requestQuotation": "اطلب عرض سعر",
+    "continueShopping": "متابعة التسوق"
+  },
+  "breadcrumb": {
+    "home": "الرئيسية",
+    "products": "المنتجات"
+  },
+  "common": {
+    "close": "إغلاق",
+    "remove": "إزالة",
+    "or": "أو"
   }
 } 

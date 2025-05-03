@@ -1,29 +1,15 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
-export default function ProductSearchBar({ onSearch }) {
+export default function ProductSearchBar({ searchTerm, onSearchChange }) {
   const { t } = useTranslation('common');
-  const [searchTerm, setSearchTerm] = useState('');
 
   const handleInputChange = (event) => {
-    setSearchTerm(event.target.value);
-    // Optional: Call onSearch prop immediately on change
-    if (onSearch) {
-      // Debounce might be needed here for performance in real app
-      onSearch(event.target.value);
-    }
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Optional: Explicit search action if needed
-    if (onSearch) {
-      onSearch(searchTerm);
-    }
+    onSearchChange(event.target.value);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-4xl mb-8 md:mb-12">
+    <div className="w-full max-w-4xl mb-8 md:mb-12">
       <label htmlFor="product-search" className="sr-only">
         {t('products.searchLabel', 'Search Products')}
       </label>
@@ -43,6 +29,6 @@ export default function ProductSearchBar({ onSearch }) {
           placeholder={t('products.searchPlaceholder', 'Search by product name...')}
         />
       </div>
-    </form>
+    </div>
   );
 } 

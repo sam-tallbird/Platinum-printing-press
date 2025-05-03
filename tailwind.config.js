@@ -41,6 +41,7 @@ module.exports = {
           DEFAULT: '#d9dee2', // Light mode by default
           dark: '#080e16',    // Dark mode variant
         },
+        'button-primary': '#73869f', // Added button primary color
       },
     },
   },

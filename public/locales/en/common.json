@@ -7,6 +7,36 @@
     "contact": "Contact Us",
     "ourWork": "Our Work"
   },
+  "navbar": {
+    "getStarted": "Get Started"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "closeAriaLabel": "Close login modal",
+      "emailLabel": "Email Address",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot password?",
+      "submitButton": "Sign in",
+      "googleButton": "Sign in with Google",
+      "separator": "Or continue with",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up",
+      "hidePasswordAriaLabel": "Hide password",
+      "showPasswordAriaLabel": "Show password"
+    },
+    "signup": {
+      "title": "Sign Up",
+      "closeAriaLabel": "Close sign up modal",
+      "usernameLabel": "Username",
+      "emailLabel": "Email Address",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Re-enter Password",
+      "submitButton": "Sign Up",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Login"
+    }
+  },
   "footer": {
     "copyright": "© 2025 Platinum Printing Press. All rights reserved."
   },

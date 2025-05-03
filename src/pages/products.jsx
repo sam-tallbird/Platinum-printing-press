@@ -5,6 +5,8 @@ import ProductCard from '../components/products/ProductCard.jsx';
 import Image from 'next/image';
 import ProductSearchBar from '../components/products/ProductSearchBar';
 import GridDistortion from '../components/effects/GridDistortion';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabaseClient'; // Import Supabase client
 
 export default function Products() {
   const router = useRouter();
@@ -12,30 +14,79 @@ export default function Products() {
   const { locale } = router;
   const isRTL = locale === 'ar';
 
-  // Dummy product data (12 items)
-  const tempImagePaths = [
-    '/images/product-temp-img/62817cd3f99f0f71abde44aeace34483.jpg',
-    '/images/product-temp-img/0c37cf1abf26e4182cf6f315ce7138e8.jpg',
-    '/images/product-temp-img/29b18fdbff64eb9e8973504619d4489d.jpg',
-    '/images/product-temp-img/966a37645a00d42f16d546a6351c11fe.jpg',
-    '/images/product-temp-img/172cbd61e96637f817342027e69af54b.jpg',
-    '/images/product-temp-img/1a7cb8bc2f72af4ea081b6002cf40ba3.jpg',
-    '/images/product-temp-img/3b99a8672d8d2ede3f622e215aa3bc62.jpg',
-    '/images/product-temp-img/7293eb5fb9ea45afa4d2dc12f1ed44f1.jpg',
-    '/images/product-temp-img/77730cb936def0c597acdd95b118631d.jpg',
-    '/images/product-temp-img/4e5706ff051c31dfa3f1bb85552e83ec.jpg',
-    '/images/product-temp-img/e24ba50c25bde6d33a89187d106d4463.jpg',
-    '/images/product-temp-img/2ddf381c42ad7a041bb42859630e2e3e.jpg' // Updated 12th image
-  ];
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(''); // State for search input
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(''); // State for debounced term
 
-  const dummyProducts = Array.from({ length: 12 }).map((_, index) => ({
-    id: index + 1,
-    imageUrl: tempImagePaths[index],
-    productName: `${t('products.dummyName', 'Product Name')} ${index + 1}`,
-    quoteKey: 'products.requestQuote', // Translation key
-    quoteDefaultText: 'Request Quotation', // Default text
-    productLink: `/products/product-${index + 1}` // Example link
-  }));
+  // Debounce effect for search term
+  useEffect(() => {
+    console.log(`Search term changed: ${searchTerm}`); // Log search term change
+    const timerId = setTimeout(() => {
+      console.log(`Debounce timer fired. Setting debounced term: ${searchTerm}`); // Log debounce firing
+      setDebouncedSearchTerm(searchTerm);
+    }, 500); // Delay in ms (e.g., 500ms)
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [searchTerm]);
+
+  // Updated fetch function to accept search term
+  const fetchProductsData = async (currentSearchTerm) => {
+    console.log(`Fetching products with term: '${currentSearchTerm}'`); // Log term received by fetch function
+    setIsLoading(true);
+    setError(null);
+    try {
+      let query = supabase
+        .from('products')
+        .select(`
+          id,
+          name_en,
+          name_ar,
+          product_images ( image_url )
+        `)
+        .eq('is_active', true)
+        .eq('product_images.is_primary', true);
+
+      // Apply search filter if search term exists
+      if (currentSearchTerm) {
+         // Use 'or' for searching in either English or Arabic name
+         // Use .ilike() for case-insensitive partial matching
+         query = query.or(`name_en.ilike.%${currentSearchTerm}%,name_ar.ilike.%${currentSearchTerm}%`);
+      }
+      
+      // Apply ordering
+      query = query.order('created_at', { ascending: false }); // Or use sort_order if you add it back
+
+      const { data, error: fetchError } = await query;
+
+      if (fetchError) {
+        throw fetchError;
+      }
+
+      // Process data to extract primary image URL directly
+      const processedData = data.map(product => ({
+        ...product,
+        primary_image_url: product.product_images[0]?.image_url || null // Get first (and only) primary image URL
+      }));
+
+      setProducts(processedData || []);
+    } catch (err) {
+      console.error("Error fetching products:", err);
+      setError(err.message || 'Failed to load products.');
+      setProducts([]); // Clear products on error
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // useEffect to fetch products when debounced search term changes
+  useEffect(() => {
+    console.log(`Debounced term updated: '${debouncedSearchTerm}'. Triggering fetch.`); // Log fetch trigger
+    fetchProductsData(debouncedSearchTerm);
+  }, [debouncedSearchTerm]); // Re-run when debounced term changes
 
   return (
     <div dir={isRTL ? 'rtl' : 'ltr'} className="bg-gray-50 dark:bg-gray-900 min-h-screen">
@@ -64,21 +115,33 @@ export default function Products() {
       
       {/* Existing Content Container - Removed old H1 */}
       <div className="max-w-[110rem] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
-        {/* === Add Search Bar Here === */}
-        <ProductSearchBar />
+        {/* === Pass props to Search Bar === */}
+        <ProductSearchBar 
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm} // Pass the state setter function
+        />
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-4">
-          {dummyProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              imageUrl={product.imageUrl}
-              productName={product.productName}
-              quoteKey={product.quoteKey}
-              quoteDefaultText={product.quoteDefaultText}
-              productLink={product.productLink}
-            />
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-4">
+          {isLoading ? (
+            // Simple loading indicator (replace with skeletons later if desired)
+            <p className="col-span-full text-center py-10">Loading products...</p>
+          ) : error ? (
+            <p className="col-span-full text-center py-10 text-red-600">Error loading products: {error}</p>
+          ) : products.length === 0 ? (
+            <p className="col-span-full text-center py-10">No products found.</p>
+          ) : (
+            products.map((product) => (
+              <ProductCard
+                key={product.id}
+                imageUrl={product.primary_image_url || '/images/placeholder.png'} // Use fetched primary image or placeholder
+                productName={isRTL ? product.name_ar : product.name_en}
+                quoteKey={product.quoteKey}
+                quoteDefaultText={product.quoteDefaultText}
+                productLink={`/products/${product.id}`} // Generate correct link
+              />
+            ))
+          )}
         </div>
       </div>
     </div>

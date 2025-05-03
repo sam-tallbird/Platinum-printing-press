@@ -8,8 +8,8 @@ export default function ProductCard({ imageUrl, productName, quoteKey, quoteDefa
   return (
     <div className="group relative rounded-lg">
       <Link href={productLink} className="block">
-        <div className="relative w-full aspect-[3.7/4.2] overflow-hidden"> 
-          {/* Aspect ratio similar to screenshot */}
+        <div className="relative w-full aspect-square overflow-hidden"> 
+          {/* Aspect ratio changed to 1:1 */}
           <Image
             src={imageUrl}
             alt={productName}
@@ -22,9 +22,6 @@ export default function ProductCard({ imageUrl, productName, quoteKey, quoteDefa
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 truncate">
             {productName}
           </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:underline">
-            {t(quoteKey, quoteDefaultText)}
-          </p>
         </div>
       </Link>
     </div>

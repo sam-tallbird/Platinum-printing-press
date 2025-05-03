@@ -64,61 +64,97 @@ export default function Home() {
   // Define the wheel handler separately
   const handleManualWheelScroll = (event) => {
     const scrollContainer = scrollContainerRef.current;
-    if (!scrollContainer || !lenis) return; // Early exit if refs aren't ready
+    // Keep lenis check needed for stop/start
+    if (!scrollContainer || !lenis) return; 
 
-    // --- Viewport Visibility Check --- 
+    // --- Viewport Visibility Check ---
     const rect = scrollContainer.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
     const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
-    const visibilityThreshold = 1; // Require 75% visibility
+    const visibilityThreshold = 0.98; // Require 98% visibility (Adjust if needed)
     const isSufficientlyVisible = (visibleHeight / rect.height) >= visibilityThreshold;
 
-    // If container is not sufficiently visible, allow default vertical scroll
     if (!isSufficientlyVisible) {
-      return; 
+      if (lenis.isStopped) lenis.start(); // Ensure lenis running if not visible
+      return;
     }
     // --- End Visibility Check ---
-      
-    const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-    const currentScrollLeft = scrollContainer.scrollLeft;
-    const scrollDirectionMultiplier = locale === 'ar' ? -1 : 1; 
-    const scrollAmount = event.deltaY * 5  * scrollDirectionMultiplier;
-    const threshold = 30; // Keep the boundary threshold for start/end release
 
+    const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+    const currentScroll = scrollContainer.scrollLeft;
+    const tolerance = 10; // Small tolerance
+
+    // --- Boundary Check with Computed Direction ---
     let preventDefault = false;
-    // Adjust boundary checks based on locale
-    if (locale === 'ar') {
-      // RTL: Scrolling means decreasing scrollLeft (visually right)
-      // or increasing scrollLeft (visually left)
-      if (scrollAmount < 0 && currentScrollLeft > threshold) { // Scrolling right (visually), not at the end (left edge)
-        preventDefault = true;
-      } else if (scrollAmount > 0 && currentScrollLeft < maxScrollLeft - threshold) { // Scrolling left (visually), not at the start (right edge)
-        preventDefault = true;
+    const direction = getComputedStyle(scrollContainer).direction;
+    const isRTL = direction === 'rtl';
+    const scrollAmount = event.deltaY;
+
+    // Explicitly separate LTR and RTL logic
+    if (isRTL) {
+      // RTL: Assuming scrollLeft is 0 at the right (start) and negative towards the left (end)
+      // maxScroll is still positive (scrollWidth - clientWidth)
+      if (scrollAmount > 0) { // User intends scroll down -> horizontal LEFT (more negative scrollLeft)
+          // Prevent default if NOT at the very End (left edge, scrollLeft approx -maxScroll)
+          if (currentScroll > -(maxScroll - tolerance)) { 
+              preventDefault = true;
+          }
+      } else if (scrollAmount < 0) { // User intends scroll up -> horizontal RIGHT (towards scrollLeft 0)
+          // Prevent default if NOT at the very Start (right edge, scrollLeft approx 0)
+          if (currentScroll < -tolerance) { // Check if we are past the starting tolerance (negative)
+              preventDefault = true;
+          }
       }
     } else {
-      // LTR (existing logic)
-      if (scrollAmount > 0 && currentScrollLeft < maxScrollLeft - threshold) { // Scrolling right, not at the end
-        preventDefault = true;
-      } else if (scrollAmount < 0 && currentScrollLeft > threshold) { // Scrolling left, not at the beginning
-        preventDefault = true;
+      // LTR: scrollLeft increases from 0 to max when scrolling visually right
+      if (scrollAmount > 0) { // User intends scroll down -> horizontal RIGHT (increasing scrollLeft)
+        // Prevent default if NOT at the very End (right edge, maxScroll)
+        if (currentScroll < maxScroll - tolerance) {
+            preventDefault = true;
+        }
+      } else if (scrollAmount < 0) { // User intends scroll up -> horizontal LEFT (decreasing scrollLeft)
+        // Prevent default if NOT at the very Start (left edge, scrollLeft 0)
+        if (currentScroll > tolerance) {
+            preventDefault = true;
+        }
       }
     }
+    // --- End Boundary Check ---
+
+    // --- Animation & Lenis Control ---
+    const scrollDirectionMultiplier = isRTL ? -1 : 1;
+    const finalScrollAmount = event.deltaY * 5 * scrollDirectionMultiplier;
 
     if (preventDefault) {
-      event.preventDefault(); 
-      lenis.stop(); 
-      
-      // Re-add the GSAP animation for manual scroll
+      event.preventDefault();
+      if (!lenis.isStopped) {
+        lenis.stop();
+      }
+
       gsap.to(scrollContainer, {
-        scrollLeft: currentScrollLeft + scrollAmount,
-        duration: 0.3, // Adjust duration as needed
-        ease: 'power1.out', // Adjust ease as needed
+        scrollLeft: currentScroll + finalScrollAmount,
+        duration: 0.3,
+        ease: 'power1.out',
         overwrite: 'auto',
         onComplete: () => {
-          lenis.start(); 
+          if (lenis.isStopped) {
+            lenis.start();
+          }
+        },
+        onInterrupt: () => {
+          // Ensure Lenis restarts if animation is interrupted while visible
+          if (isSufficientlyVisible && lenis.isStopped) { 
+            lenis.start();
+          }
         }
       });
-    } 
+    } else {
+      // Hit boundary or visibility issue, ensure Lenis is running
+      if (lenis.isStopped) {
+        lenis.start();
+      }
+      // Allow default vertical scroll
+    }
   };
 
   useEffect(() => {
@@ -247,48 +283,48 @@ export default function Home() {
 
   return (
     <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-      {/* === Full Screen Video Hero Section - Responsive Height === */}
-      <section className="relative w-full h-[60vh] md:h-screen overflow-hidden"> {/* Responsive height */}
+      {/* === Full Screen Video Hero Section - Use aspect ratio on mobile === */}
+      <section className="relative w-full aspect-video md:aspect-auto md:h-screen overflow-hidden bg-black"> {/* Added aspect-video md:aspect-auto */} 
         <video 
           autoPlay 
           loop 
           muted 
-          playsInline // Important for mobile playback
-          className="absolute top-0 left-0 w-full h-auto z-0" // Fit width, maintain aspect ratio, align top
-          src="/videos/videoplayback_1hOBwVvh.mp4" // Video source
+          playsInline 
+          className="absolute top-0 left-0 w-full h-full object-cover z-0" // Stays the same
+          src="/videos/videoplayback_1hOBwVvh.mp4" 
         >
-          {/* Fallback text for browsers that don't support the video tag */}
           Your browser does not support the video tag.
         </video>
-        {/* Overlay Removed */}
       </section>
       {/* === End Full Screen Video Hero Section === */}
 
-      {/* === New Text Section === */}
-      <section className="py-12 md:py-16 lg:py-20">
-        <div className="mx-auto px-9 flex flex-col md:flex-row items-center gap-8 md:gap-12 rtl:md:space-x-reverse">
-          <div className="w-full md:w-1/2">
-            <p key={locale} ref={beliefTextRef} className="text-xl md:text-2xl lg:text-3xl font-bold text-black dark:text-white leading-relaxed ltr:text-left rtl:text-right overflow-hidden">
-              {/* Map over the array of translated lines */}
-              {beliefLines.map((line, index) => (
-                <span key={index} className="belief-line block">
-                  {line} 
-                </span>
-              ))}
-            </p>
+      {/* === Belief Statement & Logo Section === */}
+      {/* Keep reduced padding for now, can be re-evaluated */}
+      <section className="py-8 md:py-16 lg:py-20"> 
+        <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-4 md:gap-8 md:gap-12 rtl:md:space-x-reverse"> 
+          {/* Text content */}
+          <div className="w-full md:w-1/2 order-2 md:order-1">
+            <div ref={beliefTextRef} className="overflow-hidden ltr:text-left rtl:text-right">
+              <p className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white leading-normal md:leading-relaxed">
+                {beliefLines.map((line, index) => (
+                  <span key={index} className="belief-line block">{line}</span>
+                ))}
+              </p>
+            </div>
           </div>
-          <div className="w-full md:w-1/2"> {/* Removed flex and justify-* */}
-            <Image 
-              src="/images/metalic-logo.svg"
-              alt="Platinum Printing Press Logo"
-              width={700}
-              height={88}
-              className={`h-auto max-w-full ${locale === 'ar' ? 'md:mr-auto' : 'md:ml-auto'}`}
-            />
+          {/* Logo */}
+          <div className="w-full md:w-1/2 order-1 md:order-2 flex justify-center md:justify-end">
+             <Image 
+               src="/images/metalic-logo.svg"
+               alt={t('alt.metallicLogo', "Platinum Printing Press Metallic Logo")}
+               width={500} 
+               height={63} 
+               className={`h-auto max-w-full ${locale === 'ar' ? 'md:mr-auto' : 'md:ml-auto'}`}
+             />
           </div>
         </div>
       </section>
-      {/* === End New Text Section === */}
+      {/* === End Belief Statement & Logo Section === */}
 
       {/* === Three Image Section === */}
       <section ref={threeImageSectionRef} className="pt-6 md:pt-8 lg:pt-10 pb-6 md:pb-8 lg:pb-10 overflow-hidden">

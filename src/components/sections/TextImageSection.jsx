@@ -123,8 +123,10 @@ const TextImageSection = ({
 
   return (
     <section ref={sectionRef} className={`w-full ${className}`}>
-      <div className="ps-24 pe-24">
-        <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+      {/* Responsive Padding */}
+      <div className="container mx-auto px-6 md:px-12 lg:px-24"> 
+        {/* Responsive Gap */}
+        <div className="grid md:grid-cols-2 gap-6 md:gap-10 lg:gap-16 items-center"> 
           {/* Image */}
           <div 
             className={`${
