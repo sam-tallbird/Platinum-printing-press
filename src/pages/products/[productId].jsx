@@ -492,39 +492,8 @@ export default function ProductDetailPage({ productData }) {
 
 // --- Data Fetching ---
 
-// 1. getStaticPaths tells Next.js which product IDs to pre-render at build time
-export async function getStaticPaths({ locales }) {
-   // Fetch active product IDs from Supabase
-   const { data: products, error } = await supabase
-     .from('products')
-     .select('id')
-     .eq('is_active', true);
-
-   if (error) {
-       console.error("Error fetching product paths:", error);
-       // Return empty paths or handle error appropriately
-       return { paths: [], fallback: 'blocking' }; // Use blocking fallback on error
-   }
-
-   const productIds = products ? products.map(p => p.id.toString()) : []; // Ensure IDs are strings
-    
-    const paths = (locales ?? ['en', 'ar']).flatMap((locale) => // Ensure locales is an array
-        productIds.map((id) => ({
-            params: { productId: id }, // Use actual ID
-            locale,
-        }))
-    );
-
-    return {
-        paths: paths,
-        fallback: 'blocking', // 'true' shows fallback UI while generating on demand. 
-                        // 'blocking' waits for generation on server. 
-                        // 'false' gives 404 for unknown paths.
-    };
-}
-
-// 2. getStaticProps fetches data for a specific product ID (and translations)
-export async function getStaticProps({ params, locale }) {
+// CHANGED: getStaticProps to getServerSideProps
+export async function getServerSideProps({ params, locale, req, res }) { // Added req, res context
   const { productId } = params;
   const currentLocale = locale ?? 'en';
 
@@ -538,23 +507,19 @@ export async function getStaticProps({ params, locale }) {
     `)
     .eq('id', productId)
     .eq('is_active', true) // Ensure we only fetch active products
-    // Order nested items if needed (optional here, can sort in component)
-    // .order('sort_order', { foreignTable: 'product_images', ascending: true })
-    // .order('sort_order', { foreignTable: 'product_option_groups', ascending: true })
-    // .order('sort_order', { foreignTable: 'product_option_groups.product_option_choices', ascending: true })
-    .maybeSingle(); // Use maybeSingle() in case product ID doesn't exist or isn't active
+    .maybeSingle(); 
 
   if (error) {
     console.error(`Error fetching product ${productId}:`, error);
-    // Decide how to handle DB errors - show generic error page?
   }
 
-  // If product not found (or not active), return 404
   if (!productData) {
+    // For SSR, you might want to set status code before returning notFound
+    // res.statusCode = 404; 
     return { notFound: true };
   }
 
-  // Optionally sort nested arrays here if not done in the query
+  // Sorting logic remains the same
   if (productData.product_images) {
       productData.product_images.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
   }
@@ -567,11 +532,14 @@ export async function getStaticProps({ params, locale }) {
       });
   }
 
+  // Set cache headers if desired for SSR (optional)
+  // res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
+
   return {
     props: {
-      productData, // Pass the fetched data to the page component
-      ...(await serverSideTranslations(currentLocale, ['common'])), // Load common translations only
+      productData, 
+      ...(await serverSideTranslations(currentLocale, ['common'])), // Load common translations
     },
-    revalidate: 60, // Optional: Re-generate page every 60 seconds (ISR)
+    // Removed revalidate as it's for ISR/SSG
   };
 } 
