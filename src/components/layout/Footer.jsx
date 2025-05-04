@@ -50,10 +50,6 @@ const Footer = () => {
     { 
       en: { name: 'FAQ', href: '/resources/faq' },
       ar: { name: 'الأسئلة الشائعة', href: '/resources/faq' }
-    },
-    { 
-      en: { name: 'Pricing', href: '/resources/pricing' },
-      ar: { name: 'الأسعار', href: '/resources/pricing' }
     }
   ];
 
@@ -129,12 +125,11 @@ const Footer = () => {
                 <ul className="space-y-1">
                   {socialLinks.map((link, index) => (
                     <li key={index}>
-                      <Link 
-                        href={isRTL ? link.ar.href : link.en.href} 
-                        className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors"
+                      <span 
+                        className="text-gray-600 dark:text-gray-300 text-sm transition-colors"
                       >
                         {isRTL ? link.ar.name : link.en.name}
-                      </Link>
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -148,12 +143,11 @@ const Footer = () => {
                 <ul className="space-y-1">
                   {resourceLinks.map((link, index) => (
                     <li key={index}>
-                      <Link 
-                        href={isRTL ? link.ar.href : link.en.href} 
-                        className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors"
+                      <span 
+                        className="text-gray-600 dark:text-gray-300 text-sm transition-colors"
                       >
                         {isRTL ? link.ar.name : link.en.name}
-                      </Link>
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -190,12 +184,11 @@ const Footer = () => {
                   <ul className="space-y-1">
                     {socialLinks.map((link, index) => (
                       <li key={index}>
-                        <Link 
-                          href={isRTL ? link.ar.href : link.en.href} 
-                          className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors"
+                        <span 
+                          className="text-gray-600 dark:text-gray-300 text-sm transition-colors"
                         >
                           {isRTL ? link.ar.name : link.en.name}
-                        </Link>
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -209,12 +202,11 @@ const Footer = () => {
                   <ul className="space-y-1">
                     {resourceLinks.map((link, index) => (
                       <li key={index}>
-                        <Link 
-                          href={isRTL ? link.ar.href : link.en.href} 
-                          className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors"
+                        <span 
+                          className="text-gray-600 dark:text-gray-300 text-sm transition-colors"
                         >
                           {isRTL ? link.ar.name : link.en.name}
-                        </Link>
+                        </span>
                       </li>
                     ))}
                   </ul>

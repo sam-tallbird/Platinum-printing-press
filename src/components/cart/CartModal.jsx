@@ -6,6 +6,7 @@ import { useTranslation } from 'next-i18next';
 import { X, Plus, Minus, Trash2, Check } from 'lucide-react'; // Import icons
 import { useRouter } from 'next/router'; // Import useRouter for locale
 import toast from 'react-hot-toast'; // Import toast
+import ConfirmationModal from '../common/ConfirmationModal'; // Import the new confirmation modal
 
 // --- Dummy Cart Data Removed ---
 
@@ -25,6 +26,7 @@ const CartModal = () => {
   const isRTL = locale === 'ar';
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false); // <-- Add submitted state
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false); // State for confirmation modal
   const closeTimeoutRef = useRef(null); // <-- Ref to store timeout ID
 
   // --- Cleanup timeout on component unmount ---
@@ -47,8 +49,11 @@ const CartModal = () => {
       const payload = { 
           cartItems, 
           userInfo: { 
-              email: user?.email, // Include user's email
-              name: user?.user_metadata?.full_name || user?.email // Optional: Include name if available
+              email: user?.email, 
+              name: user?.user_metadata?.full_name || user?.email, // Keep existing name logic
+              phone: user?.user_metadata?.phone, // Add phone
+              companyName: user?.user_metadata?.company_name, // Add company name
+              province: user?.user_metadata?.province // Add province
           } 
       }; 
 
@@ -70,11 +75,11 @@ const CartModal = () => {
               toast.error(errorMessage);
               setIsSubmitted(false); // Ensure submitted state is reset on error
           } else {
-              // Success!
-              const successMessage = result.message || t('cart.success.quoteSent', 'Quotation request sent!');
-              toast.success(successMessage);
+              // Success! Show confirmation modal instead of toast/timeout
+              // toast.success(successMessage); // Removed toast
               
-              setIsSubmitted(true); // <-- Set submitted state to true
+              setIsSubmitted(true); 
+              setShowConfirmationModal(true); // Show the confirmation modal
               
               // Start background processing for the cart
               if (cart?.id) {
@@ -89,16 +94,13 @@ const CartModal = () => {
                   // Potentially skip the close timeout if cart processing fails?
               }
               
-              // Clear any existing timeout before setting a new one
-              if (closeTimeoutRef.current) {
-                  clearTimeout(closeTimeoutRef.current);
-              }
-
-              // Schedule modal close after 3 seconds
-              closeTimeoutRef.current = setTimeout(() => {
-                  closeCartModal(); 
-                  // Reset state AFTER modal is closed or as part of handleClose
-              }, 3000); 
+              // Removed automatic modal close timeout
+              // if (closeTimeoutRef.current) {
+              //     clearTimeout(closeTimeoutRef.current);
+              // }
+              // closeTimeoutRef.current = setTimeout(() => {
+              //     closeCartModal(); 
+              // }, 3000); 
           }
       } catch (error) {
           console.error("Error submitting quote request fetch:", error);
@@ -109,16 +111,24 @@ const CartModal = () => {
       }
   };
 
-  // Optional: Reset submitted state when modal explicitly closes
+  // Handler for closing the confirmation modal
+  const handleConfirmationClose = () => {
+    setShowConfirmationModal(false);
+    closeCartModal();
+    // Optionally reset isSubmitted here if needed, though closing modal might suffice
+    setIsSubmitted(false); 
+  };
+
+  // Function to handle closing the main cart modal
   const handleClose = () => {
-      // Clear the scheduled timeout if modal is closed manually
-      if (closeTimeoutRef.current) {
-          clearTimeout(closeTimeoutRef.current);
-          closeTimeoutRef.current = null; // Reset ref
-      }
-      closeCartModal();
-      setIsSubmitted(false); // Reset submitted state when closing
-  }
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+    // Reset state when closing manually too
+    setIsSubmitted(false);
+    setShowConfirmationModal(false);
+    closeCartModal();
+  };
 
   return (
     <div 
@@ -312,6 +322,14 @@ const CartModal = () => {
           )}
         </div>
       </div>
+      
+      {/* Render the Confirmation Modal */}
+      <ConfirmationModal 
+        isOpen={showConfirmationModal}
+        onClose={handleConfirmationClose}
+        title={t('confirmation.defaultTitle', 'Success!')} // You can customize title if needed
+        message={t('cart.success.quoteSentConfirmation', 'Your quotation request has been submitted successfully. We will contact you soon.')}
+      />
     </div>
   );
 };

@@ -23,7 +23,7 @@ const LoginModal = () => {
         className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-md w-full relative" // Added relative positioning
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal content
       >
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-8">
           {/* Apply text-right for RTL title */}
           <h2 className={`text-xl font-semibold text-gray-900 dark:text-white ${locale === 'ar' ? 'text-right' : 'text-left'}`}>{t('auth.login.title')}</h2>
           {/* Close button positioned absolutely relative to the modal content div */}

@@ -59,30 +59,7 @@ const LoginForm = () => {
     <form onSubmit={isResetMode ? handlePasswordResetRequest : handleLoginSubmit}>
       {!isResetMode ? (
         <>
-          {/* Google Sign In Button */}
-          <div className="mb-4">
-            <button 
-              type="button" 
-              onClick={handleGoogleSignIn}
-              className="w-full flex justify-center items-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-              disabled={loading}
-            >
-              <svg className={`w-5 h-5 ${locale === 'ar' ? 'ml-2' : 'mr-2'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
-                <path fill="currentColor" d="M488 261.8C488 403.3 381.5 512 244 512 109.8 512 0 402.2 0 261.8 0 120.5 109.8 8.5 244 8.5c67.3 0 121.4 25.7 163.8 68.3l-71.1 67.5c-17.9-16.8-42.1-31.9-92.7-31.9-75.1 0-136.3 64.4-136.3 143.9 0 79.5 61.1 143.9 136.3 143.9 84.4 0 117.5-65.8 124.1-100.3H244v-86h244z"/>
-              </svg>
-              {t('auth.login.googleButton')}
-            </button>
-          </div>
-
-          {/* Separator */}
-          <div className="relative mb-4">
-            <div className="absolute inset-0 flex items-center" aria-hidden="true">
-              <div className="w-full border-t border-gray-300 dark:border-gray-600" />
-            </div>
-            <div className="relative flex justify-center">
-              <span className="px-2 bg-white dark:bg-gray-800 text-sm text-gray-500 dark:text-gray-400">{t('auth.login.separator')}</span>
-            </div>
-          </div>
+          {/* Removed Google Sign In Button and Separator */}
 
           {/* Email Input */}
           <div className="mb-4">
@@ -145,7 +122,7 @@ const LoginForm = () => {
             </div>
           </div>
           
-          <div className="mb-4 h-5 text-sm text-center">
+          <div className=" h-5 text-sm text-center">
             {error && <p className="text-red-500 dark:text-red-400">{error}</p>}
           </div>
 
@@ -194,7 +171,7 @@ const LoginForm = () => {
             />
           </div>
 
-          <div className="mb-4 h-5 text-sm text-center">
+          <div className="h-5 text-sm text-center">
             {error && <p className="text-red-500 dark:text-red-400">{error}</p>}
             {message && <p className="text-green-600 dark:text-green-400">{message}</p>}
           </div>

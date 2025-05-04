@@ -39,7 +39,11 @@
       "confirmPasswordLabel": "إعادة إدخال كلمة المرور",
       "submitButton": "إنشاء حساب",
       "haveAccount": "هل لديك حساب بالفعل؟",
-      "loginLink": "تسجيل الدخول"
+      "loginLink": "تسجيل الدخول",
+      "phoneLabel": "رقم الهاتف",
+      "companyNameLabel": "اسم الشركة",
+      "provinceLabel": "المحافظة",
+      "optionalMarker": "(اختياري)"
     }
   },
   "footer": {
@@ -49,9 +53,9 @@
     "placeholder": "هذا نص توضيحي سيتم استبداله بالمحتوى الفعلي."
   },
   "home": {
-    "beliefStatement_line1": "في بلاتينيوم، نؤمن بأن الطباعة جزء أساسي",
-    "beliefStatement_line2": "من هوية أي مشروع، وهدفنا هو عكس رسالتك",
-    "beliefStatement_line3": "ورؤيتك بأفضل طريقة ممكنة.",
+    "beliefStatement_line1": "نحن لا ننتظر حضورك... بل نصل إليك",
+    "beliefStatement_line2": "بلاتينيوم بريس هي أول مطبعة في العراق تتيح لك طلب عرض سعر ومتابعة مشروعك بالكامل أونلاين، لأننا نؤمن أن وقتك يستحق الأفضل.",
+    "beliefStatement_line3": "من التصميم إلى التسليم، نقدم خدمات طباعة متكاملة تعكس هوية مؤسستك وتدعم رسالتك.",
     "servicesTitle": "الخدمات",
     "viewAll": "عرض الكل"
   },
@@ -216,7 +220,21 @@
     "requestQuotation": "اطلب عرض سعر",
     "continueShopping": "متابعة التسوق",
     "remove": "إزالة",
-    "or": "أو"
+    "or": "أو",
+    "success": {
+        "quoteSent": "تم إرسال طلب عرض السعر!",
+        "quoteSentConfirmation": "تم تقديم طلب عرض السعر الخاص بك بنجاح. سوف نتصل بك قريبا."
+    },
+    "error": {
+      "loginRequired": "الرجاء تسجيل الدخول لإضافة المنتجات إلى سلتك.",
+      "invalidQuantity": "الرجاء إدخال كمية صالحة.",
+      "selectOptions": "الرجاء تحديد خيار لكل فئة.",
+      "addToCartFailed": "فشل إضافة المنتج إلى السلة. الرجاء المحاولة مرة أخرى.",
+      "quoteFailed": "فشل إرسال طلب عرض السعر.",
+      "quoteFailedNetwork": "خطأ في الشبكة. فشل إرسال طلب عرض السعر."
+    },
+    "submitting": "جار الإرسال...",
+    "submitted": "تم الإرسال!"
   },
   "breadcrumb": {
     "home": "الرئيسية",
@@ -225,12 +243,17 @@
   "common": {
     "close": "إغلاق",
     "remove": "إزالة",
-    "or": "أو"
+    "or": "أو",
+    "ok": "موافق"
   },
   "loading": "جار التحميل...",
   "productImages": {
     "previous": "الصورة السابقة",
     "next": "الصورة التالية",
     "goToImage": "اذهب إلى الصورة {{index}}"
+  },
+  "confirmation": {
+    "defaultTitle": "نجاح!",
+    "defaultMessage": "تمت معالجة طلبك بنجاح."
   }
 } 

@@ -48,12 +48,30 @@ export default async function handler(req, res) {
       <p><strong>Received:</strong> ${requestDate}</p>
   `;
 
-  // Add User Info if provided
-  if (userInfo && userInfo.name && userInfo.email) {
-      emailHtml += `<p><strong>From:</strong> ${userInfo.name} (${userInfo.email})</p>`;
-  } else if (userInfo && userInfo.email) {
-      emailHtml += `<p><strong>From:</strong> ${userInfo.email}</p>`;
+  // Add User Info section
+  if (userInfo) {
+    emailHtml += `<h2>User Information:</h2>`;
+    emailHtml += `<ul style=\"list-style: none; padding: 0; margin-bottom: 15px;\">`;
+    if (userInfo.name) {
+      emailHtml += `<li style=\"margin-bottom: 5px;\"><strong>Name:</strong> ${userInfo.name}</li>`;
+    }
+    if (userInfo.email) {
+      emailHtml += `<li style=\"margin-bottom: 5px;\"><strong>Email:</strong> <a href=\"mailto:${userInfo.email}\">${userInfo.email}</a></li>`;
+    }
+    if (userInfo.phone) {
+      emailHtml += `<li style=\"margin-bottom: 5px;\"><strong>Phone:</strong> ${userInfo.phone}</li>`;
+    }
+    if (userInfo.companyName) {
+      emailHtml += `<li style=\"margin-bottom: 5px;\"><strong>Company:</strong> ${userInfo.companyName}</li>`;
+    }
+    if (userInfo.province) {
+      emailHtml += `<li style=\"margin-bottom: 5px;\"><strong>Province:</strong> ${userInfo.province}</li>`;
+    }
+    emailHtml += `</ul>`;
+  } else {
+    emailHtml += `<p><em>User information not provided.</em></p>`;
   }
+
   emailHtml += `<hr style=\"border: none; border-top: 1px solid #eee; margin: 20px 0;\">
 `;
 

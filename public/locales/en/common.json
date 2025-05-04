@@ -39,7 +39,11 @@
       "confirmPasswordLabel": "Re-enter Password",
       "submitButton": "Sign Up",
       "haveAccount": "Already have an account?",
-      "loginLink": "Login"
+      "loginLink": "Login",
+      "phoneLabel": "Phone Number",
+      "companyNameLabel": "Company Name",
+      "provinceLabel": "Province",
+      "optionalMarker": "(Optional)"
     }
   },
   "footer": {
@@ -49,9 +53,9 @@
     "placeholder": "This is a placeholder text that will be replaced with actual content."
   },
   "home": {
-    "beliefStatement_line1": "At Platinum We believe that printing is an essential",
-    "beliefStatement_line2": "part of any project's identity, and our goal is to reflect",
-    "beliefStatement_line3": "your message and vision in the best possible way.",
+    "beliefStatement_line1": "Pro-level printing. Zero in-person visits",
+    "beliefStatement_line2": "Platinum Press is Iraq's first print house to offer a full quotation and order system online. Because your time matters.",
+    "beliefStatement_line3": "From design to delivery, we provide comprehensive printing services that reflect your organization's identity and support your message.",
     "servicesTitle": "SERVICES",
     "viewAll": "VIEW ALL"
   },
@@ -210,11 +214,30 @@
     "empty": "Your cart is empty.",
     "quantityLabel": "Quantity",
     "requestQuotation": "Request Quotation",
-    "continueShopping": "Continue Shopping"
+    "continueShopping": "Continue Shopping",
+    "success": {
+        "quoteSent": "Quotation request sent!",
+        "quoteSentConfirmation": "Your quotation request has been submitted successfully. We will contact you soon."
+    },
+    "error": {
+      "loginRequired": "Please log in to add items to your cart.",
+      "invalidQuantity": "Please enter a valid quantity.",
+      "selectOptions": "Please select an option for each category.",
+      "addToCartFailed": "Failed to add item to cart. Please try again.",
+      "quoteFailed": "Failed to send quotation request.",
+      "quoteFailedNetwork": "Network error. Failed to send quotation request."
+    },
+    "submitting": "Submitting...",
+    "submitted": "Submitted!"
   },
   "common": {
     "close": "Close",
     "remove": "Remove",
-    "or": "Or"
+    "or": "Or",
+    "ok": "OK"
+  },
+  "confirmation": {
+    "defaultTitle": "Success!",
+    "defaultMessage": "Your request has been processed successfully."
   }
 } 

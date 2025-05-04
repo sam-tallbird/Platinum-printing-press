@@ -96,17 +96,13 @@ export const AuthProvider = ({ children }) => {
     router.push('/'); 
   };
 
-  // --- NEW signup function ---
-  const signup = async (email, password, username) => {
+  // --- NEW signup function (Updated to accept metadata object) ---
+  const signup = async (email, password, metadata) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      // Store additional info like username in metadata
       options: {
-        data: {
-          full_name: username, // You can adjust the metadata field name 
-          // Add other metadata fields here if needed
-        },
+        data: metadata,
         // Add email redirect URL if email confirmation is enabled in Supabase
         // emailRedirectTo: `${window.location.origin}/`, 
       },
