@@ -570,7 +570,7 @@ export async function getStaticProps({ params, locale }) {
   return {
     props: {
       productData, // Pass the fetched data to the page component
-      ...(await serverSideTranslations(currentLocale, ['common'])), // Load translations
+      ...(await serverSideTranslations(currentLocale, ['common'])), // Load common translations only
     },
     revalidate: 60, // Optional: Re-generate page every 60 seconds (ISR)
   };

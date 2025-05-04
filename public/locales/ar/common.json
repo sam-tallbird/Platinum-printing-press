@@ -175,14 +175,17 @@
     "minOrder": "الحد الأدنى للطلب: {{count}}",
     "error": {
         "selectOptions": "الرجاء تحديد خيار لكل فئة.",
-        "addToCartFailed": "فشل إضافة المنتج إلى السلة. الرجاء المحاولة مرة أخرى."
+        "addToCartFailed": "فشل إضافة المنتج إلى السلة. الرجاء المحاولة مرة أخرى.",
+        "loginRequired": "الرجاء تسجيل الدخول لإضافة المنتجات إلى سلتك.",
+        "invalidQuantity": "الرجاء إدخال كمية صالحة."
     },
     "success": {
         "addedToCart": "تمت إضافة {{quantity}} × {{productName}} إلى السلة"
     },
     "loading": "جار التحميل...",
     "noDescription": "لا يوجد وصف متاح.",
-    "noOptions": "لا توجد خيارات قابلة للتخصيص لهذا المنتج."
+    "noOptions": "لا توجد خيارات قابلة للتخصيص لهذا المنتج.",
+    "minOrderQuantity": "الحد الأدنى للطلب: {{min}}"
   },
   "cart": {
     "title": "سلة التسوق",
@@ -190,7 +193,9 @@
     "empty": "سلتك فارغة.",
     "quantityLabel": "الكمية",
     "requestQuotation": "اطلب عرض سعر",
-    "continueShopping": "متابعة التسوق"
+    "continueShopping": "متابعة التسوق",
+    "remove": "إزالة",
+    "or": "أو"
   },
   "breadcrumb": {
     "home": "الرئيسية",
@@ -200,5 +205,11 @@
     "close": "إغلاق",
     "remove": "إزالة",
     "or": "أو"
+  },
+  "loading": "جار التحميل...",
+  "productImages": {
+    "previous": "الصورة السابقة",
+    "next": "الصورة التالية",
+    "goToImage": "اذهب إلى الصورة {{index}}"
   }
 } 

@@ -8,7 +8,12 @@
     "ourWork": "Our Work"
   },
   "navbar": {
-    "getStarted": "Get Started"
+    "getStarted": "Get Started",
+    "basketAriaLabel": "Shopping Basket",
+    "profileAriaLabel": "User Profile",
+    "myAccount": "My Account",
+    "orderHistory": "Order History",
+    "logout": "Logout"
   },
   "auth": {
     "login": {
@@ -85,6 +90,24 @@
       "description": "Custom packaging solutions merge design and engineering to create boxes, inserts, or sleeves that protect products, enhance impact, amplify branding, and deliver unboxing experiences that delight customers and foster purchases."
     }
   },
+  "products": {
+    "heroAlt": "Showcase of high-quality print products",
+    "heroTitle": "Premium Print Products, Tailored for Your Brand",
+    "heroSubtitle": "Explore the full suite—from everyday business stationery to bespoke merchandise—each piece produced with precision, vibrant color, and unparalleled quality.",
+    "dummyName": "Product Name",
+    "requestQuote": "Request a Quote",
+    "pageTitle": "Our Products",
+    "searchLabel": "Search Products",
+    "searchPlaceholder": "Search by product name...",
+    "addToBasket": "Add to Basket",
+    "added": "Added"
+  },
+  "ourWork": {
+    "pageTitle": "Our Work",
+    "imageAltPrefix": "Portfolio image for",
+    "cardTitle": "Project Title",
+    "cardCategory": "Category - Year"
+  },
   "contact": {
     "contactInfoTitle": "Contact Information",
     "emailTitle": "Email",
@@ -98,5 +121,79 @@
     "email": "Email Address",
     "message": "Message content",
     "submitInquiry": "SUBMIT INQUIRY"
+  },
+  "confirmLogout": {
+    "title": "Confirm Logout",
+    "message": "Are you sure you want to log out?",
+    "confirmText": "Logout",
+    "cancelText": "Cancel"
+  },
+  "account": {
+    "title": "My Account",
+    "welcome": "Welcome, {{name}}!",
+    "emailDisplay": "Email: {{email}}",
+    "updateUsernameTitle": "Update Username",
+    "usernameLabel": "Username",
+    "updateEmailTitle": "Update Email",
+    "emailChangeInfo": "Changing your email requires confirmation via both your old and new addresses.",
+    "newEmailLabel": "New Email",
+    "updatePasswordTitle": "Update Password",
+    "newPasswordLabel": "New Password",
+    "confirmPasswordLabel": "Confirm New Password",
+    "updateButton": "Update",
+    "error": {
+        "usernameRequired": "Username cannot be empty.",
+        "invalidEmail": "Please enter a valid email address.",
+        "emailUnchanged": "Please enter a different email address.",
+        "passwordTooShort": "Password must be at least 6 characters long.",
+        "passwordMismatch": "Passwords do not match.",
+        "genericUpdate": "Update failed."
+    },
+    "success": {
+        "usernameUpdated": "Username updated successfully!",
+        "emailChangeRequested": "Email update requested. Please check both your old and new email addresses for confirmation links.",
+        "passwordUpdated": "Password updated successfully!"
+    }
+  },
+  "loading": "Loading...",
+  "breadcrumb": {
+    "home": "Home",
+    "products": "Products"
+  },
+  "productImages": {
+    "previous": "Previous image",
+    "next": "Next image",
+    "goToImage": "Go to image {{index}}"
+  },
+  "productDetails": {
+    "noDescription": "No description available.",
+    "noOptions": "No customizable options available for this product.",
+    "quantity": "Quantity",
+    "decreaseQuantity": "Decrease quantity",
+    "currentQuantity": "Current quantity",
+    "increaseQuantity": "Increase quantity",
+    "minOrderQuantity": "Minimum order quantity: {{min}}",
+    "error": {
+      "loginRequired": "Please log in to add items to your cart.",
+      "invalidQuantity": "Please enter a valid quantity.",
+      "selectOptions": "Please select an option for each category.",
+      "addToCartFailed": "Failed to add item to cart. Please try again."
+    },
+    "success": {
+      "addedToCart": "{{quantity}} × {{productName}} added to cart"
+    }
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "loading": "Loading cart...",
+    "empty": "Your cart is empty.",
+    "quantityLabel": "Quantity",
+    "requestQuotation": "Request Quotation",
+    "continueShopping": "Continue Shopping"
+  },
+  "common": {
+    "close": "Close",
+    "remove": "Remove",
+    "or": "Or"
   }
 } 
