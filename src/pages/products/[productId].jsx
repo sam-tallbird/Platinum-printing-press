@@ -393,7 +393,7 @@ export default function ProductDetailPage({ productData }) {
               {/* --- Quantity Selector --- */}
                <div className="px-6 mb-8">
                     <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-                        {t('productDetails.quantity', 'Quantity')}
+                        {t('productDetails.quantity')}
                     </label>
                     <div className="inline-flex items-center border border-gray-300 dark:border-gray-600 rounded-md overflow-hidden">
                         <button 
@@ -425,7 +425,7 @@ export default function ProductDetailPage({ productData }) {
                         </button>
                     </div>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                         {t('productDetails.minOrderQuantity', 'Minimum order quantity: {min}', { min: minOrderQuantity })}
+                         {t('productDetails.minOrderQuantity', { min: minOrderQuantity })}
                     </p>
                </div>
               {/* --- End Quantity Selector --- */}
