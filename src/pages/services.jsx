@@ -56,9 +56,12 @@ export default function Services() {
   const card4Ref = useRef(null);
   const card5Ref = useRef(null);
   const card6Ref = useRef(null);
+  const card7Ref = useRef(null);
+  const card8Ref = useRef(null);
+  const card9Ref = useRef(null);
   
   // Store all card refs in an array for easier access
-  const cardRefs = [card1Ref, card2Ref, card3Ref, card4Ref, card5Ref, card6Ref];
+  const cardRefs = [card1Ref, card2Ref, card3Ref, card4Ref, card5Ref, card6Ref, card7Ref, card8Ref, card9Ref];
 
   // Function to scroll to the first service card
   const scrollToFirstService = () => {
@@ -228,44 +231,62 @@ export default function Services() {
     
   }, [isRTL, locale, t]);
 
-  // Dummy services data
+  // Updated services data with 9 services
   const services = [
     {
       id: '01',
       title: "Digital Printing",
-      description: "Digital printing delivers flexible, high‑quality output, empowering short‑run production with vibrant color accuracy, seamless variable‑data personalization, and same‑day turnaround, enabling businesses to respond quickly, test campaigns, and elevate brand effortlessly.",
+      description: "Flexible printing for short runs — ideal for business cards, invoices, brochures, catalogs, menus, and quick promotional materials. Available in full-color or black & white, with professional-grade quality.",
       image: "/images/digital-printing.png",
     },
     {
       id: '02',
       title: "Offset Printing",
-      description: "Offset printing delivers high‑volume runs with consistent color and favorable unit costs, leveraging modern plate technology and rigorous quality control to supply materials ideal for catalogs, magazines, books, and brochures.",
+      description: "Cost-effective for high-volume jobs without compromising on quality. Perfect for magazines, books, annual reports, bulk catalogs, and folded prints with consistent color accuracy.",
       image: "/images/offset-printing.png",
     },
     {
       id: '03',
-      title: "Large‑Format Printing",
-      description: "Large‑format printing delivers posters, banners, and displays in impressive dimensions, using UV‑resistant inks and durable substrates to ensure vivid imagery, weatherproofing, and lasting presence at events, stores, and trade shows.",
-      image: "/images/larg-format-printing.png",
+      title: "Advertising & Commercial Printing",
+      description: "Design and printing of indoor and outdoor banners, roll-ups, display stands, posters, and all types of stickers (transparent, matte, waterproof). Advanced printing on acrylic, glass, UV surfaces, and laser cutting available.",
+      image: "/images/larg-format-printing.png", // Kept previous image path
     },
     {
       id: '04',
-      title: "Finishing & Packaging",
-      description: "Finishing and packaging services refine printed materials through precision cutting, binding, laminating, coatings, and die‑folding, integrating custom boxes or sleeves to protect, enhance, and present products with polished, retail‑ready appeal.",
-      image: "/images/finishing-packinging.png",
+      title: "Promotional & Gift Printing",
+      description: "High-quality printing on mugs, t-shirts, notebooks, bags, keychains, pens, and more. Multiple techniques available.",
+      image: "/images/graphic-desgin.jpg", // Kept previous image path
     },
     {
       id: '05',
-      title: "Graphic Design",
-      description: "Graphic design specialists craft concepts embodying brand identity, blending typography, color theory, and aesthetics to deliver cohesive logos, marketing collateral, and pieces that engage audiences, strengthen recognition, and enhance clarity.",
-      image: "/images/graphic-desgin.jpg",
+      title: "Packaging & Finishing",
+      description: "Innovative packaging that adds value. Design and production of custom printed boxes, paper and plastic bags, and product labels in various shapes and sizes to fit every packaging need.",
+      image: "/images/finishing-packinging.png", // Kept previous image path
     },
     {
       id: '06',
-      title: "Custom Packaging Solutions",
-      description: "Custom packaging solutions merge design and engineering to create boxes, inserts, or sleeves that protect products, enhance impact, amplify branding, and deliver unboxing experiences that delight customers and foster purchases.",
-      image: "/images/custom-packaging-solutions.png",
+      title: "Creative Design",
+      description: "Visual identity that speaks your brand. Logo design and high-quality creative layouts for brochures, catalogs, ads, posters, and menus. Print-ready files are optimized for all types of printing machines.",
+      image: "/images/custom-packaging-solutions.png", // Kept previous image path
     },
+    {
+      id: '07',
+      title: "Office Stationery",
+      description: "Carbon and non-carbon invoice books, accounting forms, delivery and receipt books, archive folders, employee badges, business cards, and custom stamps.",
+      image: "/images/offset-printing.png", // Updated image
+    },
+    {
+      id: '08',
+      title: "Exhibition & Event Branding",
+      description: "Complete solutions for booths & displays. Custom design and execution of exhibition booths, roll-ups, promotional tables, branded backgrounds, and full on-site setup with lighting and visual effects.",
+      image: "/images/our-vision.jpg", // Updated image
+    },
+    {
+      id: '09',
+      title: "Custom Solutions",
+      description: "Free consultations to help you choose the best printing options for your budget. We handle special orders for schools, businesses, and government entities, with the flexibility to combine services into one integrated project.",
+      image: "/images/larg-format-printing.png", // Updated image
+    }
   ];
 
   // --- GSAP Card Scrollytelling useEffect ---

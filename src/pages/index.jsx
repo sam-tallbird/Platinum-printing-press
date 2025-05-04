@@ -11,43 +11,79 @@ import { useLenis } from 'lenis/react';
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
-// Define services data (extracted from services.jsx, simplified for carousel)
+// Updated services data for homepage carousel (9 services)
 const servicesData = [
   {
     id: '01',
-    titleKey: "services.01.title", // Use translation key
-    defaultTitle: "Digital Printing", // Fallback English title
+    titleKey: "services.01.title",
+    defaultTitle: "Digital Printing",
+    homeDescriptionKey: "services.01.homeDescription",
+    defaultHomeDescription: "Fast turnaround with high precision",
     image: "/images/digital-printing.png",
   },
   {
     id: '02',
     titleKey: "services.02.title",
     defaultTitle: "Offset Printing",
+    homeDescriptionKey: "services.02.homeDescription",
+    defaultHomeDescription: "The smart choice for large volumes",
     image: "/images/offset-printing.png",
   },
   {
     id: '03',
     titleKey: "services.03.title",
-    defaultTitle: "Large-Format Printing",
-    image: "/images/larg-format-printing.png", // Corrected potential typo from services.jsx
+    defaultTitle: "Advertising & Commercial Printing",
+    homeDescriptionKey: "services.03.homeDescription",
+    defaultHomeDescription: "Strong visual presence that reflects your brand",
+    image: "/images/larg-format-printing.png",
   },
   {
     id: '04',
     titleKey: "services.04.title",
-    defaultTitle: "Finishing & Packaging",
-    image: "/images/finishing-packinging.png", // Setting back to the confirmed filename with 'i'
+    defaultTitle: "Promotional & Gift Printing",
+    homeDescriptionKey: "services.04.homeDescription",
+    defaultHomeDescription: "Custom gifts that strengthen client loyalty",
+    image: "/images/graphic-desgin.jpg", // Assuming this image fits
   },
   {
     id: '05',
     titleKey: "services.05.title",
-    defaultTitle: "Graphic Design",
-    image: "/images/graphic-desgin.jpg", // Corrected path and extension
+    defaultTitle: "Packaging & Finishing",
+    homeDescriptionKey: "services.05.homeDescription",
+    defaultHomeDescription: "Innovative packaging that adds value",
+    image: "/images/finishing-packinging.png",
   },
   {
     id: '06',
     titleKey: "services.06.title",
-    defaultTitle: "Custom Packaging Solutions",
-    image: "/images/custom-packaging-solutions.png", // Assuming this path based on pattern
+    defaultTitle: "Creative Design",
+    homeDescriptionKey: "services.06.homeDescription",
+    defaultHomeDescription: "Visual identity that speaks your brand",
+    image: "/images/custom-packaging-solutions.png", // Assuming this image fits
+  },
+  {
+    id: '07',
+    titleKey: "services.07.title",
+    defaultTitle: "Office Stationery",
+    homeDescriptionKey: "services.07.homeDescription",
+    defaultHomeDescription: "Professional print solutions for everyday use",
+    image: "/images/offset-printing.png", // Updated image
+  },
+  {
+    id: '08',
+    titleKey: "services.08.title",
+    defaultTitle: "Exhibition & Event Branding",
+    homeDescriptionKey: "services.08.homeDescription",
+    defaultHomeDescription: "Complete solutions for booths & displays",
+    image: "/images/our-vision.jpg", // Updated image
+  },
+  {
+    id: '09',
+    titleKey: "services.09.title",
+    defaultTitle: "Custom Solutions",
+    homeDescriptionKey: "services.09.homeDescription",
+    defaultHomeDescription: "Tailored execution that matches your vision",
+    image: "/images/larg-format-printing.png", // Updated image
   },
 ];
 
@@ -393,10 +429,15 @@ export default function Home() {
                        fill
                        className="object-cover" 
                      />
-                     {/* Service Name - Absolutely positioned bottom-left */}
-                     <p className="absolute bottom-0 start-0 m-2 px-3 py-1 text-white text-3xl font-medium">
-                       {t(service.titleKey, service.defaultTitle)} 
-                     </p>
+                     {/* Service Name & Subheading - Absolutely positioned bottom-left */}
+                     <div className="absolute bottom-0 start-0 m-4 text-white">
+                       <h3 className="text-2xl md:text-3xl font-bold mb-1">
+                         {t(service.titleKey, service.defaultTitle)} 
+                       </h3>
+                       <p className="text-sm md:text-base font-medium">
+                         {t(service.homeDescriptionKey, service.defaultHomeDescription)} 
+                       </p>
+                     </div>
                    </div>
                  </div>
                </Link>
