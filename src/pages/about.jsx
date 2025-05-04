@@ -221,7 +221,7 @@ export default function About() {
 
         {/* Responsive margin */}
         <TextImageSection 
-          imageUrl="/images/who-are-we.jpg"
+          imageUrl="/images/who-are-we-01.jpg"
           imageAlt="Vintage printing press with framed prints on wall"
           title={whoWeAreTitle}
           paragraphs={whoWeAreParagraphs}
@@ -234,7 +234,7 @@ export default function About() {
 
         {/* Responsive margin */}
         <TextImageSection 
-          imageUrl="/images/our-vision.jpg"
+          imageUrl="/images/who-are-we-02.jpg"
           imageAlt="Colorful CMYK printing color palette chart"
           title={ourVisionTitle}
           paragraphs={ourVisionParagraphs}
@@ -247,8 +247,8 @@ export default function About() {
 
         {/* Responsive margin */}
         <TextImageSection 
-          imageUrl="/images/our-mission.jpg"
-          imageAlt="Modern printing equipment showing precision and quality"
+          imageUrl="/images/who-are-we-03.jpg"
+          imageAlt="Hands checking quality of printed materials"
           title={ourMissionTitle}
           paragraphs={ourMissionParagraphs}
           translations={ourMissionTranslations}

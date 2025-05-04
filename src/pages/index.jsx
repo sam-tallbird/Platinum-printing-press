@@ -291,7 +291,7 @@ export default function Home() {
           muted 
           playsInline 
           className="absolute top-0 left-0 w-full h-full object-cover z-0" // Stays the same
-          src="/videos/videoplayback_1hOBwVvh.mp4" 
+          src="/videos/home-hero-video.mp4" 
         >
           Your browser does not support the video tag.
         </video>
@@ -330,28 +330,28 @@ export default function Home() {
       <section ref={threeImageSectionRef} className="pt-6 md:pt-8 lg:pt-10 pb-6 md:pb-8 lg:pb-10 overflow-hidden">
         <div className="mx-auto px-9"> {/* Side padding 36px */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3"> {/* 3 columns on md+, 12px gap */}
-            {/* Image 1 */}
+            {/* Image 1 (Left) */}
             <div className="relative w-full aspect-[4/3] scale-image-item"> {/* Added scale-image-item class */}
               <Image 
-                src="/images/digital-printing.png"
+                src="/images/home-about-left.jpg"
                 alt="Digital printing process"
                 fill
                 className="object-cover " // Fill container, cover aspect ratio
               />
             </div>
-            {/* Image 2 */}
+            {/* Image 2 (Center) */}
             <div className="relative w-full aspect-[4/3] scale-image-item"> {/* Added scale-image-item class */}
               <Image 
-                src="/images/custom-packaging-solutions.png"
+                src="/images/home-about-center.jpg"
                 alt="Custom packaging solutions examples"
                 fill
                 className="object-cover "
               />
             </div>
-            {/* Image 3 */}
+            {/* Image 3 (Right) */}
             <div className="relative w-full aspect-[4/3] scale-image-item"> {/* Added scale-image-item class */}
               <Image 
-                src="/images/finishing-packinging.png" // Check filename typo? 'packaging'?
+                src="/images/home-about-right.jpg"
                 alt="Print finishing and packaging services"
                 fill
                 className="object-cover "
