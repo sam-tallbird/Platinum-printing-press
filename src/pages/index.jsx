@@ -341,9 +341,20 @@ export default function Home() {
           {/* Text content */}
           <div className="w-full md:w-1/2 order-2 md:order-1">
             <div ref={beliefTextRef} className="overflow-hidden ltr:text-left rtl:text-right">
-              <p className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white leading-normal md:leading-relaxed">
+              {/* Increased size on parent p */}
+              <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 dark:text-white leading-normal md:leading-relaxed">
                 {beliefLines.map((line, index) => (
-                  <span key={index} className="belief-line block">{line}</span>
+                  <span 
+                    key={index} 
+                    className={`belief-line block ${ // Add top margin to lines after the first one
+                      index > 0 ? 'mt-2' : '' 
+                    } ${ // Keep existing size/weight logic
+                      index === 1 ? 'text-lg md:text-xl lg:text-2xl' : 
+                      index === 2 ? 'text-base md:text-lg lg:text-xl font-medium' : '' 
+                    }`}
+                  >
+                    {line}
+                  </span>
                 ))}
               </p>
             </div>

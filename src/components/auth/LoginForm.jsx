@@ -171,10 +171,8 @@ const LoginForm = () => {
             />
           </div>
 
-          <div className="h-5 text-sm text-center">
-            {error && <p className="text-red-500 dark:text-red-400">{error}</p>}
-            {message && <p className="text-green-600 dark:text-green-400">{message}</p>}
-          </div>
+          {error && <p className="mb-4 text-sm text-red-500 dark:text-red-400 text-center">{error}</p>}
+          {message && <p className="mb-4 text-sm text-green-600 dark:text-green-400 text-center">{message}</p>}
 
           <button 
             type="submit" 

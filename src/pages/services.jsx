@@ -237,43 +237,43 @@ export default function Services() {
       id: '01',
       title: "Digital Printing",
       description: "Flexible printing for short runs — ideal for business cards, invoices, brochures, catalogs, menus, and quick promotional materials. Available in full-color or black & white, with professional-grade quality.",
-      image: "/images/digital-printing.png",
+      image: "/images/services/service-01.jpg",
     },
     {
       id: '02',
       title: "Offset Printing",
       description: "Cost-effective for high-volume jobs without compromising on quality. Perfect for magazines, books, annual reports, bulk catalogs, and folded prints with consistent color accuracy.",
-      image: "/images/offset-printing.png",
+      image: "/images/services/service-02-offest.jpg",
     },
     {
       id: '03',
       title: "Advertising & Commercial Printing",
       description: "Design and printing of indoor and outdoor banners, roll-ups, display stands, posters, and all types of stickers (transparent, matte, waterproof). Advanced printing on acrylic, glass, UV surfaces, and laser cutting available.",
-      image: "/images/larg-format-printing.png", // Kept previous image path
+      image: "/images/services/service-03-ads.jpg",
     },
     {
       id: '04',
       title: "Promotional & Gift Printing",
       description: "High-quality printing on mugs, t-shirts, notebooks, bags, keychains, pens, and more. Multiple techniques available.",
-      image: "/images/graphic-desgin.jpg", // Kept previous image path
+      image: "/images/services/service-04-gift.jpg",
     },
     {
       id: '05',
       title: "Packaging & Finishing",
       description: "Innovative packaging that adds value. Design and production of custom printed boxes, paper and plastic bags, and product labels in various shapes and sizes to fit every packaging need.",
-      image: "/images/finishing-packinging.png", // Kept previous image path
+      image: "/images/services/service-05.jpg",
     },
     {
       id: '06',
       title: "Creative Design",
       description: "Visual identity that speaks your brand. Logo design and high-quality creative layouts for brochures, catalogs, ads, posters, and menus. Print-ready files are optimized for all types of printing machines.",
-      image: "/images/custom-packaging-solutions.png", // Kept previous image path
+      image: "/images/services/service-06-design.jpg",
     },
     {
       id: '07',
       title: "Office Stationery",
       description: "Carbon and non-carbon invoice books, accounting forms, delivery and receipt books, archive folders, employee badges, business cards, and custom stamps.",
-      image: "/images/offset-printing.png", // Updated image
+      image: "/images/services/service-07-stationery.jpg",
     },
     {
       id: '08',
@@ -416,7 +416,7 @@ export default function Services() {
           <div className="relative w-full order-1 md:order-2 md:w-1/2 overflow-hidden min-h-[300px] md:min-h-0">
             <div ref={heroImageMaskRef} className="absolute inset-0 bg-gray-50 dark:bg-gray-900 z-20"></div>
             <Image
-              src="/images/digital-printing.png"
+              src="/images/services/service-main-first.jpg"
               alt={t('services.heroImageAlt', 'Showcase of premium printing services')}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"

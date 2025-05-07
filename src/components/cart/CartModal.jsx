@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next';
 import { X, Plus, Minus, Trash2, Check } from 'lucide-react'; // Import icons
 import { useRouter } from 'next/router'; // Import useRouter for locale
 import toast from 'react-hot-toast'; // Import toast
-import ConfirmModal from '../Common/ConfirmModal'; // Corrected import path and name
+import ConfirmationModal from '../common/ConfirmationModal'; // Reverted to correct import path and name
 
 // --- Dummy Cart Data Removed ---
 
@@ -323,8 +323,8 @@ const CartModal = () => {
         </div>
       </div>
       
-      {/* Render the Confirmation Modal */}
-      <ConfirmModal 
+      {/* Render the Confirmation Modal (using correct component) */}
+      <ConfirmationModal 
         isOpen={showConfirmationModal}
         onClose={handleConfirmationClose}
         title={t('confirmation.defaultTitle', 'Success!')} // You can customize title if needed
