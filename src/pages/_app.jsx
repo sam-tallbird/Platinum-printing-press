@@ -8,7 +8,7 @@ import Footer from '../components/layout/Footer';
 import LoginModal from '../components/auth/LoginModal';
 import SignUpModal from '../components/auth/SignUpModal';
 import CartModal from '../components/cart/CartModal';
-import ConfirmModal from '../components/Common/ConfirmModal';
+import ConfirmModal from '../components/common/ConfirmModal';
 import '../styles/globals.css';
 import { ReactLenis } from 'lenis/react';
 import { useRouter } from 'next/router';
