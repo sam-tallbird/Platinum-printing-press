@@ -7,6 +7,9 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { useLenis } from 'lenis/react';
+import { supabase } from '../lib/supabaseClient'; // Add Supabase client import
+import RecentProducts from '../components/sections/RecentProducts'; // Import the new component
+import RecentWork from '../components/sections/RecentWork'; // Import the new component
 
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
@@ -19,7 +22,7 @@ const servicesData = [
     defaultTitle: "Digital Printing",
     homeDescriptionKey: "services.01.homeDescription",
     defaultHomeDescription: "Fast turnaround with high precision",
-    image: "/images/digital-printing.png",
+    image: "/images/services/service-01.jpg",
   },
   {
     id: '02',
@@ -27,7 +30,7 @@ const servicesData = [
     defaultTitle: "Offset Printing",
     homeDescriptionKey: "services.02.homeDescription",
     defaultHomeDescription: "The smart choice for large volumes",
-    image: "/images/offset-printing.png",
+    image: "/images/services/service-02-offest.jpg",
   },
   {
     id: '03',
@@ -35,7 +38,7 @@ const servicesData = [
     defaultTitle: "Advertising & Commercial Printing",
     homeDescriptionKey: "services.03.homeDescription",
     defaultHomeDescription: "Strong visual presence that reflects your brand",
-    image: "/images/larg-format-printing.png",
+    image: "/images/services/service-03-ads.jpg",
   },
   {
     id: '04',
@@ -43,7 +46,7 @@ const servicesData = [
     defaultTitle: "Promotional & Gift Printing",
     homeDescriptionKey: "services.04.homeDescription",
     defaultHomeDescription: "Custom gifts that strengthen client loyalty",
-    image: "/images/graphic-desgin.jpg", // Assuming this image fits
+    image: "/images/services/service-04-gift.jpg",
   },
   {
     id: '05',
@@ -51,7 +54,7 @@ const servicesData = [
     defaultTitle: "Packaging & Finishing",
     homeDescriptionKey: "services.05.homeDescription",
     defaultHomeDescription: "Innovative packaging that adds value",
-    image: "/images/finishing-packinging.png",
+    image: "/images/services/service-05.jpg",
   },
   {
     id: '06',
@@ -59,7 +62,7 @@ const servicesData = [
     defaultTitle: "Creative Design",
     homeDescriptionKey: "services.06.homeDescription",
     defaultHomeDescription: "Visual identity that speaks your brand",
-    image: "/images/custom-packaging-solutions.png", // Assuming this image fits
+    image: "/images/services/service-06-design.jpg",
   },
   {
     id: '07',
@@ -67,7 +70,7 @@ const servicesData = [
     defaultTitle: "Office Stationery",
     homeDescriptionKey: "services.07.homeDescription",
     defaultHomeDescription: "Professional print solutions for everyday use",
-    image: "/images/offset-printing.png", // Updated image
+    image: "/images/services/service-07-stationery.jpg",
   },
   {
     id: '08',
@@ -87,10 +90,14 @@ const servicesData = [
   },
 ];
 
-export default function Home() {
+export default function Home({ recentProducts, recentWorkItems }) {
   const router = useRouter();
   const { t } = useTranslation('common');
   const { locale } = router;
+
+  console.log('[Home Page] Recent Products Prop:', recentProducts);
+  console.log('[Home Page] Recent Work Items Prop:', recentWorkItems);
+
   const beliefTextRef = useRef(null);
   const threeImageSectionRef = useRef(null); // Ref for the three image section
   const serviceCarouselSectionRef = useRef(null); // Ref for the service carousel section
@@ -318,7 +325,7 @@ export default function Home() {
   ];
 
   return (
-    <div dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <div dir={locale === 'ar' ? 'rtl' : 'ltr'} className="bg-white dark:bg-black">
       {/* === Full Screen Video Hero Section - Use aspect ratio on mobile === */}
       <section className="relative w-full aspect-video md:aspect-auto md:h-screen overflow-hidden bg-black"> {/* Added aspect-video md:aspect-auto */} 
         <video 
@@ -409,6 +416,9 @@ export default function Home() {
       </section>
       {/* === End Three Image Section === */}
 
+      {/* Recent Products Section */}
+      <RecentProducts recentProducts={recentProducts} />
+
       {/* === Service Carousel Section === */}
       <section ref={serviceCarouselSectionRef} className="pt-12 md:pt-16 lg:pt-20 pb-12 md:pb-16 lg:pb-20">
         {/* Container with side padding */}
@@ -457,14 +467,92 @@ export default function Home() {
         </div>
       </section>
       {/* === End Service Carousel Section === */}
+
+      {/* Our Work Section */}
+      <RecentWork recentWorkItems={recentWorkItems} />
+
+      {/* Commented out original placement of RecentProducts */}
+      {/* 
+      <RecentProducts recentProducts={recentProducts} /> 
+      */}
+
+      {/* Other sections like "Why Choose Us", "Testimonials", "Call to Action" can follow */}
     </div>
   );
 }
 
 export async function getStaticProps({ locale }) {
+  // Fetch the 4 most recent products
+  let products = [];
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select(`
+        id,
+        name_en,
+        name_ar,
+        product_images (image_url, is_primary)
+      `)
+      .order('created_at', { ascending: false })
+      .limit(8);
+
+    if (error) {
+      console.error('Error fetching recent products:', error);
+    } else {
+      console.log('[getStaticProps] Raw Supabase data:', data);
+      products = data.map(product => {
+        const primaryImage = product.product_images?.find(img => img.is_primary);
+        const fallbackImage = product.product_images?.[0];
+        return {
+          id: product.id,
+          name: locale === 'ar' ? product.name_ar : product.name_en,
+          slug: product.id, // Always use id for the slug for now
+          imageUrl: primaryImage?.image_url || fallbackImage?.image_url || '/images/placeholder-product.jpg'
+        };
+      });
+    }
+  } catch (error) {
+    console.error('Supabase query failed for recent products:', error);
+  }
+
+  // Fetch the 8 most recent work items
+  let workItems = [];
+  try {
+    const { data: workData, error: workError } = await supabase
+      .from('works') // Correct table name
+      .select(`
+        id,
+        title_en,
+        title_ar,
+        image_url
+      `)
+      .order('created_at', { ascending: false })
+      .limit(8);
+
+    if (workError) {
+      console.error('Error fetching recent work items:', workError);
+    } else {
+      console.log('[getStaticProps] Raw workData from Supabase:', workData);
+      workItems = workData.map(item => {
+        // No need to find primary/fallback from related table
+        return {
+          id: item.id,
+          name: locale === 'ar' ? item.title_ar : item.title_en,
+          imageUrl: item.image_url || '/images/placeholder-work.jpg' // Use direct image_url or placeholder
+        };
+      });
+      console.log('[getStaticProps] Mapped workItems:', workItems); // Log mapped work items
+    }
+  } catch (error) {
+    console.error('Supabase query failed for recent work items:', error);
+  }
+
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
+      recentProducts: products,
+      recentWorkItems: workItems, // Pass work items to the component
     },
+    revalidate: 60,
   };
 } 

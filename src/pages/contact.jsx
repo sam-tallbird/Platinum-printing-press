@@ -90,15 +90,33 @@ export default function Contact() {
              <div>
                <h3 className="text-lg font-semibold mb-2">{t('contact.addressTitle', 'Address')}</h3>
                <p className="text-gray-600 dark:text-gray-400">
-                 30m st, Erbil, Iraq
+                 {t('contact.addressValue', '30m st, Erbil, Kurdistan Region of Iraq')}
                </p>
+             </div>
+             {/* === Map Section === */}
+             <div className="mt-8 ">
+               <h3 className="text-lg font-semibold mb-2">{t('contact.locationMapTitle', 'Our Location')}</h3>
+               { 
+                   <iframe 
+                   src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d804.940879727038!2d44.0023492!3d36.1966327!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4007239045a83acd%3A0xb84bf11260eed421!2sPlatinum%20Printing%20Press!5e0!3m2!1sen!2siq!4v1746699335264!5m2!1sen!2siq"
+                   width="100%" 
+                   height="250" 
+                   style={{ border:0 }} 
+                   allowFullScreen="" 
+                   loading="lazy" 
+                   referrerPolicy="no-referrer-when-downgrade">
+                 </iframe>
+               
+                
+               }
+               
              </div>
              <div>
                <h3 className="text-lg font-semibold mb-2">{t('contact.phoneTitle', 'Mobile')}</h3>
-               <a href="tel:+9647510349381" className="block text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
+               <a href="tel:+9647510349381" dir="ltr" className="block text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
                  {t('contact.phone1', '+964 751 034 9381')}
                </a>
-               <a href="tel:+9647874404207" className="block text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
+               <a href="tel:+9647874404207" dir="ltr" className="block text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
                  {t('contact.phone2', '+964 787 440 4207')}
                </a>
              </div>
@@ -143,6 +161,7 @@ export default function Contact() {
                 required
                 value={formData.fullName}
                 onChange={handleChange}
+                placeholder={t('contact.fullNamePlaceholder', 'Enter your full name')}
                 className="block w-full border-b border-gray-300 dark:border-gray-600 focus:border-black dark:focus:border-white focus:ring-0 outline-none bg-transparent py-2 px-1"
               />
             </div>
@@ -158,6 +177,7 @@ export default function Contact() {
                 id="companyName"
                 value={formData.companyName}
                 onChange={handleChange}
+                placeholder={t('contact.companyNamePlaceholder', 'Enter your company name (optional)')}
                 className="block w-full border-b border-gray-300 dark:border-gray-600 focus:border-black dark:focus:border-white focus:ring-0 outline-none bg-transparent py-2 px-1"
               />
             </div>
@@ -173,7 +193,9 @@ export default function Contact() {
                 id="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleChange}
-                className="block w-full border-b border-gray-300 dark:border-gray-600 focus:border-black dark:focus:border-white focus:ring-0 outline-none bg-transparent py-2 px-1"
+                placeholder={t('contact.phoneNumberPlaceholder', 'Enter your phone number')}
+                required
+                className="block w-full border-b border-gray-300 dark:border-gray-600 focus:border-black dark:focus:border-white focus:ring-0 outline-none bg-transparent py-2 px-1 rtl:text-right"
               />
             </div>
 
@@ -189,6 +211,7 @@ export default function Contact() {
                 required
                 value={formData.email}
                 onChange={handleChange}
+                placeholder={t('contact.emailPlaceholder', 'Enter your email address')}
                 className="block w-full border-b border-gray-300 dark:border-gray-600 focus:border-black dark:focus:border-white focus:ring-0 outline-none bg-transparent py-2 px-1"
               />
             </div>
@@ -196,7 +219,7 @@ export default function Contact() {
              {/* Message Content */}
              <div className="md:col-span-2">
                <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                 {t('contact.message', 'Message')}* 
+                 {t('contact.message', 'Message')}*
                </label>
                <textarea
                  name="message"
@@ -205,6 +228,7 @@ export default function Contact() {
                  required
                  value={formData.message}
                  onChange={handleChange}
+                 placeholder={t('contact.messagePlaceholder', 'Enter your message')}
                  className="block w-full border-b border-gray-300 dark:border-gray-600 focus:border-black dark:focus:border-white focus:ring-0 outline-none bg-transparent py-2 px-1 resize-none"
                ></textarea>
              </div>

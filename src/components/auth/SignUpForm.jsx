@@ -165,7 +165,7 @@ const SignUpForm = () => {
       </div>
 
       {/* Province Dropdown */}
-      <div>
+      <div className="relative">
         <label htmlFor="province" className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 ${locale === 'ar' ? 'text-right' : 'text-left'}`}>{t('auth.signup.provinceLabel')}*</label>
         <select
           id="province"
@@ -173,7 +173,7 @@ const SignUpForm = () => {
           required
           value={province}
           onChange={(e) => setProvince(e.target.value)}
-          className={`block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${locale === 'ar' ? 'text-right' : 'text-left'}`}
+          className={`appearance-none block w-full px-3 py-2 ${locale === 'ar' ? 'pl-10' : 'pr-10'} border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${locale === 'ar' ? 'text-right' : 'text-left'}`}
           disabled={loading || !!message}
         >
           <option value="" disabled>{t('auth.signup.selectProvincePrompt', 'Select a province...')}</option>
@@ -183,6 +183,11 @@ const SignUpForm = () => {
             </option>
           ))}
         </select>
+        <div className={`absolute inset-y-0 top-6 ${locale === 'ar' ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center pointer-events-none`}>
+          <svg className="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </div>
       </div>
 
       {/* Password */}

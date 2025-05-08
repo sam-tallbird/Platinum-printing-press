@@ -43,6 +43,7 @@
       "phoneLabel": "رقم الهاتف",
       "companyNameLabel": "اسم الشركة",
       "provinceLabel": "المحافظة",
+      "selectProvincePrompt": "اختر محافظة...",
       "optionalMarker": "(اختياري)"
     }
   },
@@ -57,7 +58,13 @@
     "beliefStatement_line2": "بلاتينيوم بريس هي أول مطبعة في العراق تتيح لك طلب عرض سعر ومتابعة مشروعك بالكامل أونلاين، لأننا نؤمن أن وقتك يستحق الأفضل.",
     "beliefStatement_line3": "من التصميم إلى التسليم، نقدم خدمات طباعة متكاملة تعكس هوية مؤسستك وتدعم رسالتك.",
     "servicesTitle": "الخدمات",
-    "viewAll": "عرض الكل"
+    "viewAll": "عرض الكل",
+    "recentProductsTitle": "أحدث منتجاتنا",
+    "viewAllProducts": "عرض كل المنتجات",
+    "noRecentProducts": "لا توجد منتجات حديثة لعرضها في الوقت الحالي.",
+    "recentWorkTitle": "أحدث أعمالنا",
+    "viewAllWork": "عرض كل الأعمال",
+    "noRecentWork": "لا توجد أعمال حديثة لعرضها في الوقت الحالي."
   },
   "services": {
     "badge": "خدمات",
@@ -146,18 +153,37 @@
     "cardCategory": "الفئة - السنة"
   },
   "contact": {
+    "heroAlt": "الاتصال بمطبعة بلاتينيوم",
+    "heroTitle": "تواصل معنا",
+    "heroSubtitle": "نحن هنا للمساعدة في جميع احتياجات الطباعة الخاصة بك. تواصل معنا للاستفسارات أو عروض الأسعار أو الدعم.",
     "contactInfoTitle": "معلومات الاتصال",
-    "emailTitle": "البريد الإلكتروني",
-    "phoneTitle": "الهاتف",
     "addressTitle": "العنوان",
-    "addressLine1": "شارع وهمي 123",
-    "addressLine2": "المنطقة الصناعية",
-    "addressLine3": "دبي، الإمارات العربية المتحدة",
-    "firstName": "الاسم الأول",
-    "lastName": "الاسم الأخير",
+    "phoneTitle": "الهاتف",
+    "phone1": "+964 751 034 9381",
+    "phone2": "+964 787 440 4207",
+    "emailTitle": "البريد الإلكتروني",
+    "emailAddress": "info@platinum-printing.co",
+    "workingHoursTitle": "ساعات العمل",
+    "workingHoursDays": "السبت – الخميس، 9:00 صباحًا – 6:00 مساءً",
+    "addressValue": "شارع ٣٠م، أربيل، كردستان العراق",
+    "viewOnMap": "عرض على الخريطة",
+    "locationMapTitle": "موقعنا",
+    "mapPlaceholder": "سيتم عرض الخريطة هنا بمجرد إضافة رمز التضمين.",
+    "fullName": "الاسم الكامل",
+    "companyName": "اسم الشركة",
+    "phoneNumber": "رقم الموبايل",
     "email": "عنوان البريد الإلكتروني",
     "message": "محتوى الرسالة",
-    "submitInquiry": "إرسال الاستفسار"
+    "submitInquiry": "إرسال الاستفسار",
+    "sendingMessage": "جارٍ إرسال الرسالة...",
+    "messageSentSuccess": "تم إرسال الرسالة بنجاح!",
+    "messageSendError": "فشل إرسال الرسالة. يرجى المحاولة مرة أخرى.",
+    "submitting": "جارٍ الإرسال...",
+    "fullNamePlaceholder": "أدخل اسمك الكامل",
+    "companyNamePlaceholder": "أدخل اسم شركتك (اختياري)",
+    "phoneNumberPlaceholder": "أدخل رقم هاتفك",
+    "emailPlaceholder": "أدخل عنوان بريدك الإلكتروني",
+    "messagePlaceholder": "أدخل رسالتك"
   },
   "confirmLogout": {
     "title": "تأكيد تسجيل الخروج",
