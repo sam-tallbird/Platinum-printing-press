@@ -3,15 +3,14 @@ import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 
 export default function RecentWork({ recentWorkItems }) {
-  console.log('[RecentWork Component] Received recentWorkItems:', recentWorkItems);
   const { t, i18n } = useTranslation('common');
   const { locale } = i18n;
 
   if (!recentWorkItems || recentWorkItems.length === 0) {
     return (
-      <section className="py-12 md:py-20 mx-auto px-9">
-        <div className="flex justify-between items-center mb-6 md:mb-8">
-          <h2 className="text-5xl font-bold uppercase ltr:text-left rtl:text-right">
+      <section className="py-12 md:py-20 mx-auto px-4 sm:px-9 w-full">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 gap-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase ltr:text-left rtl:text-right">
             {t('home.recentWorkTitle', 'Our Recent Work')}
           </h2>
           <Link href="/our-work" passHref legacyBehavior>
@@ -28,9 +27,9 @@ export default function RecentWork({ recentWorkItems }) {
   }
 
   return (
-    <section className="py-12 md:py-20 mx-auto px-9">
-      <div className="flex justify-between items-center mb-6 md:mb-8">
-        <h2 className="text-5xl font-bold uppercase ltr:text-left rtl:text-right">
+    <section className="py-12 md:py-20 mx-auto px-4 sm:px-9 w-full">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 gap-4">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase ltr:text-left rtl:text-right">
           {t('home.recentWorkTitle', 'Our Recent Work')}
         </h2>
         <Link href="/our-work" passHref legacyBehavior>

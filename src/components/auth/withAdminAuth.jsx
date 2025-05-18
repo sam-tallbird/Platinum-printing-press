@@ -9,22 +9,29 @@ const withAdminAuth = (WrappedComponent) => {
   const WrapperComponent = (props) => {
     const { user, isAuthenticated, isLoading: authIsLoading } = useAuth();
     const router = useRouter();
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(null);
     const [roleCheckLoading, setRoleCheckLoading] = useState(true);
+    const [checkedUserId, setCheckedUserId] = useState(null);
 
     useEffect(() => {
       // Redirect immediately if auth loading is done and user is not authenticated
       if (!authIsLoading && !isAuthenticated) {
         router.replace('/cms-login');
-        setRoleCheckLoading(false);
         return;
       }
 
       // If authenticated, check the admin role
-      if (!authIsLoading && isAuthenticated && user) {
+      if (!authIsLoading && isAuthenticated && user && (user.id !== checkedUserId || isAdmin === null)) {
         const checkAdminStatus = async () => {
           setRoleCheckLoading(true);
+          setCheckedUserId(user.id);
           try {
+            if (!user.id) {
+              console.error('User ID is not available for admin check.');
+              setIsAdmin(false);
+              setRoleCheckLoading(false);
+              return;
+            }
             const { data, error } = await supabase.rpc('is_admin', { user_id: user.id });
             if (error) {
               console.error('Error checking admin status:', error);
@@ -40,10 +47,14 @@ const withAdminAuth = (WrappedComponent) => {
           }
         };
         checkAdminStatus();
-      } else if (!authIsLoading && !isAuthenticated) {
+      } else if (!authIsLoading && isAuthenticated && user && user.id === checkedUserId && isAdmin !== null) {
         setRoleCheckLoading(false);
+      } else if (!authIsLoading && !isAuthenticated) {
+        setIsAdmin(false);
+        setRoleCheckLoading(false);
+        setCheckedUserId(null);
       }
-    }, [authIsLoading, isAuthenticated, user, router]);
+    }, [authIsLoading, isAuthenticated, user, router, checkedUserId, isAdmin]);
 
     // Added effect for redirection if user is confirmed NOT admin
     useEffect(() => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../components/layout/AdminLayout';
 import withAdminAuth from '../../components/auth/withAdminAuth';
-import { Plus, X, Trash2, Edit, Image as ImageIcon } from 'lucide-react';
+import { Plus, X, Trash2, Edit, Image as ImageIcon, RefreshCw } from 'lucide-react';
 import { useLenis } from 'lenis/react'; // Import the hook to access Lenis instance
 import { supabase } from '../../lib/supabaseClient'; // Import Supabase client
 import toast from 'react-hot-toast'; // Import toast
@@ -16,6 +16,9 @@ const initialGroupState = {
   groupName_ar: '',
   choices: [initialChoiceState],
 };
+
+const NEW_PRODUCT_FORM_DATA_KEY = 'cmsNewProductFormData';
+const getEditProductFormKey = (productId) => `cmsEditProductFormData_${productId}`;
 
 const CmsProducts = () => {
   // Replace dummy data with state for products
@@ -37,7 +40,23 @@ const CmsProducts = () => {
     imageFiles: [], // Store objects like { id: string, file: File }
     primaryImageId: null, // Add state for primary image ID
   };
-  const [newProductData, setNewProductData] = useState(initialFormData);
+  const [newProductData, setNewProductData] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedData = localStorage.getItem(NEW_PRODUCT_FORM_DATA_KEY);
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData);
+          // Ensure imageFiles is always an empty array on initial load from localStorage
+          // as File objects cannot be reliably persisted. User must re-select.
+          return { ...parsedData, imageFiles: [] };
+        } catch (e) {
+          console.error("Error parsing saved new product data from localStorage", e);
+          // Fallback to initialFormData if parsing fails
+        }
+      }
+    }
+    return initialFormData;
+  });
 
   // Edit Modal
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -54,14 +73,84 @@ const CmsProducts = () => {
   // Get the Lenis instance
   const lenis = useLenis();
 
+  // Persist newProductData to localStorage
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (typeof window !== 'undefined') {
+        // Create a shallow copy and remove File objects before saving
+        const dataToSave = { ...newProductData, imageFiles: [] };
+        localStorage.setItem(NEW_PRODUCT_FORM_DATA_KEY, JSON.stringify(dataToSave));
+      }
+    }, 500); // Debounce save by 500ms
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [newProductData]);
+
+  // Persist editFormData to localStorage
+  useEffect(() => {
+    if (editFormData && editingProduct?.id) {
+      const handler = setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          // Create a shallow copy and remove new File objects if any
+          // Assuming new files might be stored in a field like 'newImageFiles'
+          // For now, let's assume editFormData structure is similar to newProductData regarding files.
+          // If editFormData.imageFiles contains File objects for new uploads, they need to be cleared.
+          // Existing images (URLs) are fine.
+          let dataToSave = { ...editFormData };
+          if (dataToSave.imageFiles && dataToSave.imageFiles.some(f => f.file instanceof File)) {
+            // This clears any newly selected files if they are in 'imageFiles'
+            // A more robust solution would differentiate between existing image URLs and new File objects.
+            dataToSave = { ...dataToSave, imageFiles: [] };
+          }
+          // If new files are stored in a different field like 'newlyAddedImageFiles', clear that:
+          // if (dataToSave.newlyAddedImageFiles) {
+          //   dataToSave = { ...dataToSave, newlyAddedImageFiles: [] };
+          // }
+          localStorage.setItem(getEditProductFormKey(editingProduct.id), JSON.stringify(dataToSave));
+        }
+      }, 500); // Debounce save by 500ms
+
+      return () => {
+        clearTimeout(handler);
+      };
+    }
+  }, [editFormData, editingProduct?.id]);
+
+
   // Modal open/close handlers
   const openModal = () => {
-    setNewProductData(initialFormData);
+    // newProductData is already initialized from localStorage or initialFormData by its useState
+    // If localStorage had data, it's used. If not, initialFormData is used.
+    // If we want to ensure it ALWAYS resets to initialFormData OR localStorage if openModal is called again,
+    // we could re-set it here, but the current useState initializer should handle the first load.
+    // For now, let's rely on the useState initializer.
+    // To be absolutely sure it reflects the latest from localStorage or initial (if empty) upon opening:
+    if (typeof window !== 'undefined') {
+      const savedData = localStorage.getItem(NEW_PRODUCT_FORM_DATA_KEY);
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData);
+          setNewProductData({ ...parsedData, imageFiles: [] });
+        } catch (e) {
+          setNewProductData(initialFormData);
+        }
+      } else {
+        setNewProductData(initialFormData);
+      }
+    } else {
+      setNewProductData(initialFormData);
+    }
     lenis?.stop(); // Stop Lenis scrolling when modal opens
     setIsModalOpen(true);
   }
   const closeModal = () => {
     setIsModalOpen(false);
+    setNewProductData(initialFormData); // Reset form, which will also update localStorage to clean state via useEffect
+    if (typeof window !== 'undefined') { // Also explicitly clear storage for add form
+        localStorage.removeItem(NEW_PRODUCT_FORM_DATA_KEY);
+    }
     lenis?.start(); // Restart Lenis scrolling when modal closes
   }
 
@@ -1112,16 +1201,34 @@ const CmsProducts = () => {
 
   return (
     <AdminLayout>
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">Manage Products</h1>
-          <button 
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center transition duration-150 ease-in-out" 
-            onClick={openModal} 
-          >
-            <Plus size={20} className="mr-2"/> Add New Product
-          </button>
+      <div className="container mx-auto p-4 md:p-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">Manage Products</h1>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={fetchProducts}
+              disabled={isLoading}
+              className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-colors"
+              aria-label="Refresh products"
+            >
+              <RefreshCw className={`w-5 h-5 ${isLoading ? 'animate-spin' : ''}`} />
+            </button>
+            <button
+              onClick={openModal}
+              className="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-colors duration-150"
+            >
+              <Plus size={20} className="mr-2" />
+              Add New Product
+            </button>
+          </div>
         </div>
+        
+        {/* Loading State */}
+        {isLoading && !products.length && ( // Show only if products array is also empty
+          <div className="flex justify-center items-center h-40">
+            <p>Loading products...</p>
+          </div>
+        )}
 
         {/* Products Table - Removed DragDropContext wrapper */}
         <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">

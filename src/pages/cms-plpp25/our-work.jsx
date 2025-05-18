@@ -17,6 +17,9 @@ const initialWorkData = {
   imageFile: null, // To store the selected image file
 };
 
+const NEW_WORK_FORM_DATA_KEY = 'cmsNewWorkFormData';
+const getEditWorkFormKey = (workId) => `cmsEditWorkFormData_${workId}`;
+
 const CmsOurWork = () => {
   // --- UPDATED State --- 
   const [works, setWorks] = useState([]); // Initialize with empty array
@@ -24,7 +27,21 @@ const CmsOurWork = () => {
   const [fetchError, setFetchError] = useState(null);
   
   const [isAddWorkModalOpen, setIsAddWorkModalOpen] = useState(false);
-  const [newWorkData, setNewWorkData] = useState(initialWorkData);
+  const [newWorkData, setNewWorkData] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedData = localStorage.getItem(NEW_WORK_FORM_DATA_KEY);
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData);
+          // Ensure imageFile is always null on initial load from localStorage
+          return { ...parsedData, imageFile: null };
+        } catch (e) {
+          console.error("Error parsing saved new work data from localStorage", e);
+        }
+      }
+    }
+    return initialWorkData;
+  });
   const [isSubmitting, setIsSubmitting] = useState(false); // Renamed from isLoading
   const [submitError, setSubmitError] = useState(null); // Renamed from error
   const [deletingId, setDeletingId] = useState(null); // Track which item is being deleted
@@ -38,6 +55,37 @@ const CmsOurWork = () => {
   const [editFormData, setEditFormData] = useState(null);      // Store the form data for editing
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateError, setUpdateError] = useState(null);
+
+  // Persist newWorkData to localStorage
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (typeof window !== 'undefined') {
+        const dataToSave = { ...newWorkData, imageFile: null }; // Exclude File object
+        localStorage.setItem(NEW_WORK_FORM_DATA_KEY, JSON.stringify(dataToSave));
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [newWorkData]);
+
+  // Persist editFormData to localStorage
+  useEffect(() => {
+    if (editFormData && editingWorkItem?.id) {
+      const handler = setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          // Exclude File object if editFormData can contain a new imageFile
+          const dataToSave = { ...editFormData, imageFile: null }; 
+          localStorage.setItem(getEditWorkFormKey(editingWorkItem.id), JSON.stringify(dataToSave));
+        }
+      }, 500);
+
+      return () => {
+        clearTimeout(handler);
+      };
+    }
+  }, [editFormData, editingWorkItem?.id]);
 
   // --- Fetch Works Function --- 
   const fetchWorks = async () => {
@@ -70,12 +118,32 @@ const CmsOurWork = () => {
 
   // Modal open/close handlers
   const openAddWorkModal = () => {
-    setNewWorkData(initialWorkData); 
+    // setNewWorkData(initialWorkData); // State is now initialized from localStorage or initialWorkData by useState
+    // Ensure it reflects latest from localStorage or initial if key was cleared
+    if (typeof window !== 'undefined') {
+      const savedData = localStorage.getItem(NEW_WORK_FORM_DATA_KEY);
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData);
+          setNewWorkData({ ...parsedData, imageFile: null });
+        } catch (e) {
+          setNewWorkData(initialWorkData);
+        }
+      } else {
+        setNewWorkData(initialWorkData);
+      }
+    } else {
+      setNewWorkData(initialWorkData);
+    }
     setSubmitError(null); // Clear previous submit errors
     setIsAddWorkModalOpen(true);
   };
   const closeAddWorkModal = () => {
     setIsAddWorkModalOpen(false);
+    setNewWorkData(initialWorkData); // Reset form
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(NEW_WORK_FORM_DATA_KEY); // Explicitly clear storage
+    }
   };
 
   // Handle text input changes
@@ -177,6 +245,9 @@ toast.promise(
       // TODO: Add logic to refresh the displayed works list
       closeAddWorkModal();
       await fetchWorks(); // <-- Refresh the list after successful add
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(NEW_WORK_FORM_DATA_KEY);
+      }
 
     } catch (err) {
       console.error("Error adding work:", err);
@@ -254,16 +325,32 @@ toast.promise(
 
   // --- Edit Modal Handlers ---
   const openEditModal = (workItem) => {
-    setEditingWorkItem(workItem); // Store the original item
-    // Initialize form data based on the item, nullify imageFile initially
-    setEditFormData({
+    setEditingWorkItem(workItem);
+    // Initial form data based on the work item
+    let initialEditData = {
       title_en: workItem.title_en || '',
       title_ar: workItem.title_ar || '',
       description_en: workItem.description_en || '',
       description_ar: workItem.description_ar || '',
-      imageFile: null, // Only set if user uploads a new file
-    });
-    setUpdateError(null); // Clear previous errors
+      imageFile: null, // For a new image, if user wants to change it
+      // Keep existing image_url to display until a new one is chosen
+      existing_image_url: workItem.image_url 
+    };
+
+    if (typeof window !== 'undefined') {
+      const savedData = localStorage.getItem(getEditWorkFormKey(workItem.id));
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData);
+          // Merge, prioritizing saved data but ensuring imageFile is null
+          initialEditData = { ...initialEditData, ...parsedData, imageFile: null };
+        } catch (e) {
+          console.error(`Error parsing saved edit data for work ${workItem.id}`, e);
+        }
+      }
+    }
+    setEditFormData(initialEditData);
+    setUpdateError(null);
     setIsEditModalOpen(true);
   };
 
@@ -271,6 +358,9 @@ toast.promise(
     setIsEditModalOpen(false);
     setEditingWorkItem(null);
     setEditFormData(null);
+    if (editingWorkItem && typeof window !== 'undefined') {
+      localStorage.removeItem(getEditWorkFormKey(editingWorkItem.id));
+    }
   };
 
   const handleEditInputChange = (e) => {
@@ -364,7 +454,9 @@ toast.promise(uploadPromise, {
       toast.success('Work item updated successfully!');
       closeEditModal();
       await fetchWorks(); // Refresh the list
-
+      if (editingWorkItem && typeof window !== 'undefined') {
+        localStorage.removeItem(getEditWorkFormKey(editingWorkItem.id));
+      }
     } catch (err) {
       console.error("Error updating work:", err);
       setUpdateError(err.message || 'An unexpected error occurred.');

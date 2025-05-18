@@ -95,9 +95,6 @@ export default function Home({ recentProducts, recentWorkItems }) {
   const { t } = useTranslation('common');
   const { locale } = router;
 
-  console.log('[Home Page] Recent Products Prop:', recentProducts);
-  console.log('[Home Page] Recent Work Items Prop:', recentWorkItems);
-
   const beliefTextRef = useRef(null);
   const threeImageSectionRef = useRef(null); // Ref for the three image section
   const serviceCarouselSectionRef = useRef(null); // Ref for the service carousel section
@@ -325,15 +322,15 @@ export default function Home({ recentProducts, recentWorkItems }) {
   ];
 
   return (
-    <div dir={locale === 'ar' ? 'rtl' : 'ltr'} className="bg-white dark:bg-black">
+    <div dir={locale === 'ar' ? 'rtl' : 'ltr'} className="bg-white dark:bg-black w-full overflow-x-hidden">
       {/* === Full Screen Video Hero Section - Use aspect ratio on mobile === */}
-      <section className="relative w-full aspect-video md:aspect-auto md:h-screen overflow-hidden bg-black"> {/* Added aspect-video md:aspect-auto */} 
+      <section className="relative w-full aspect-[1/1] sm:aspect-video md:aspect-auto md:h-screen overflow-hidden bg-black"> 
         <video 
           autoPlay 
           loop 
           muted 
           playsInline 
-          className="absolute top-0 left-0 w-full h-full object-cover z-0" // Stays the same
+          className="absolute top-0 left-0 w-full h-full object-cover z-0" 
           src="/videos/home-hero-video.mp4" 
         >
           Your browser does not support the video tag.
@@ -342,9 +339,8 @@ export default function Home({ recentProducts, recentWorkItems }) {
       {/* === End Full Screen Video Hero Section === */}
 
       {/* === Belief Statement & Logo Section === */}
-      {/* Keep reduced padding for now, can be re-evaluated */}
-      <section className="py-8 md:py-16 lg:py-20"> 
-        <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-4 md:gap-8 md:gap-12 rtl:md:space-x-reverse"> 
+      <section className="py-8 md:py-16 lg:py-20 w-full"> 
+        <div className="container mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center gap-4 md:gap-8 md:gap-12 rtl:md:space-x-reverse"> 
           {/* Text content */}
           <div className="w-full md:w-1/2 order-2 md:order-1">
             <div ref={beliefTextRef} className="overflow-hidden ltr:text-left rtl:text-right">
@@ -381,34 +377,34 @@ export default function Home({ recentProducts, recentWorkItems }) {
       {/* === End Belief Statement & Logo Section === */}
 
       {/* === Three Image Section === */}
-      <section ref={threeImageSectionRef} className="pt-6 md:pt-8 lg:pt-10 pb-6 md:pb-8 lg:pb-10 overflow-hidden">
-        <div className="mx-auto px-9"> {/* Side padding 36px */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3"> {/* 3 columns on md+, 12px gap */}
+      <section ref={threeImageSectionRef} className="pt-6 md:pt-8 lg:pt-10 pb-6 md:pb-8 lg:pb-10 overflow-hidden w-full">
+        <div className="mx-auto px-4 sm:px-9"> 
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3"> 
             {/* Image 1 (Left) */}
-            <div className="relative w-full aspect-[4/3] scale-image-item"> {/* Added scale-image-item class */}
+            <div className="relative w-full aspect-[4/3] scale-image-item"> 
               <Image 
                 src="/images/home-about-left.jpg"
                 alt="Digital printing process"
                 fill
-                className="object-cover " // Fill container, cover aspect ratio
+                className="object-cover" 
               />
             </div>
             {/* Image 2 (Center) */}
-            <div className="relative w-full aspect-[4/3] scale-image-item"> {/* Added scale-image-item class */}
+            <div className="relative w-full aspect-[4/3] scale-image-item"> 
               <Image 
                 src="/images/home-about-center.jpg"
                 alt="Custom packaging solutions examples"
                 fill
-                className="object-cover "
+                className="object-cover"
               />
             </div>
             {/* Image 3 (Right) */}
-            <div className="relative w-full aspect-[4/3] scale-image-item"> {/* Added scale-image-item class */}
+            <div className="relative w-full aspect-[4/3] scale-image-item"> 
               <Image 
                 src="/images/home-about-right.jpg"
                 alt="Print finishing and packaging services"
                 fill
-                className="object-cover "
+                className="object-cover"
               />
             </div>
           </div>
@@ -420,18 +416,18 @@ export default function Home({ recentProducts, recentWorkItems }) {
       <RecentProducts recentProducts={recentProducts} />
 
       {/* === Service Carousel Section === */}
-      <section ref={serviceCarouselSectionRef} className="pt-12 md:pt-16 lg:pt-20 pb-12 md:pb-16 lg:pb-20">
+      <section ref={serviceCarouselSectionRef} className="pt-12 md:pt-16 lg:pt-20 pb-12 md:pb-16 lg:pb-20 w-full">
         {/* Container with side padding */}
-        <div className="mx-auto px-9">
+        <div className="mx-auto px-4 sm:px-9">
            {/* Flex container for Title and View All button */}
            <div className="flex justify-between items-center mb-8">
              {/* Title for Carousel */}
-             <h2 className="text-5xl font-bold uppercase ltr:text-left rtl:text-right"> {/* Removed mb-8 */}
+             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase ltr:text-left rtl:text-right"> 
                {t('home.servicesTitle', 'SERVICES')}
              </h2>
              {/* View All Button/Badge */}
              <Link 
-               href="/services" // Assuming link destination is /services
+               href="/services" 
                className="inline-block text-sm uppercase font-medium border border-gray-700 dark:border-gray-300 text-gray-700 dark:text-gray-300 rounded-full px-4 py-1 transition-colors hover:bg-gray-700 hover:text-white dark:hover:bg-gray-300 dark:hover:text-gray-900"
              >
                {t('home.viewAll', 'VIEW ALL')} 
@@ -439,10 +435,10 @@ export default function Home({ recentProducts, recentWorkItems }) {
            </div>
            
            {/* Horizontal Scroll Container - Scrollbar hidden */}
-           <div ref={scrollContainerRef} className="flex overflow-x-auto gap-x-3 pb-4 scrollbar-hide">
+           <div ref={scrollContainerRef} className="flex overflow-x-auto gap-x-3 pb-4 scrollbar-hide w-full max-w-full">
              {servicesData.map((service) => (
                <Link key={service.id} href="/services">
-                 <div className="flex-shrink-0 w-96 md:w-[30rem]">
+                 <div className="flex-shrink-0 w-80 sm:w-96 md:w-[30rem]">
                    <div className="relative w-full aspect-[3/4] overflow-hidden service-image-mask">
                      <Image 
                        src={service.image}
@@ -499,7 +495,6 @@ export async function getStaticProps({ locale }) {
     if (error) {
       console.error('Error fetching recent products:', error);
     } else {
-      console.log('[getStaticProps] Raw Supabase data:', data);
       products = data.map(product => {
         const primaryImage = product.product_images?.find(img => img.is_primary);
         const fallbackImage = product.product_images?.[0];
@@ -532,7 +527,6 @@ export async function getStaticProps({ locale }) {
     if (workError) {
       console.error('Error fetching recent work items:', workError);
     } else {
-      console.log('[getStaticProps] Raw workData from Supabase:', workData);
       workItems = workData.map(item => {
         // No need to find primary/fallback from related table
         return {
@@ -541,7 +535,6 @@ export async function getStaticProps({ locale }) {
           imageUrl: item.image_url || '/images/placeholder-work.jpg' // Use direct image_url or placeholder
         };
       });
-      console.log('[getStaticProps] Mapped workItems:', workItems); // Log mapped work items
     }
   } catch (error) {
     console.error('Supabase query failed for recent work items:', error);
