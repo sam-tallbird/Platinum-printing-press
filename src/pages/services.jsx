@@ -243,7 +243,7 @@ export default function Services() {
       id: '02',
       title: "Offset Printing",
       description: "Cost-effective for high-volume jobs without compromising on quality. Perfect for magazines, books, annual reports, bulk catalogs, and folded prints with consistent color accuracy.",
-      image: "/images/services/service-02-offest.jpg",
+      image: "/images/services/service-02.jpg",
     },
     {
       id: '03',
