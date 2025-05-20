@@ -255,13 +255,13 @@ export default function Services() {
       id: '04',
       title: "Promotional & Gift Printing",
       description: "High-quality printing on mugs, t-shirts, notebooks, bags, keychains, pens, and more. Multiple techniques available.",
-      image: "/images/services/service-04-gift.jpg",
+      image: "/images/services/service-04.png",
     },
     {
       id: '05',
       title: "Packaging & Finishing",
       description: "Innovative packaging that adds value. Design and production of custom printed boxes, paper and plastic bags, and product labels in various shapes and sizes to fit every packaging need.",
-      image: "/images/services/service-05.jpg",
+      image: "/images/services/service-05.png",
     },
     {
       id: '06',
@@ -279,7 +279,7 @@ export default function Services() {
       id: '08',
       title: "Exhibition & Event Branding",
       description: "Complete solutions for booths & displays. Custom design and execution of exhibition booths, roll-ups, promotional tables, branded backgrounds, and full on-site setup with lighting and visual effects.",
-      image: "/images/our-vision.jpg", // Updated image
+      image: "/images/services/service-08.jpg", // Updated image
     },
     {
       id: '09',
