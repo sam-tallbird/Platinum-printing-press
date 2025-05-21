@@ -30,7 +30,7 @@ const servicesData = [
     defaultTitle: "Offset Printing",
     homeDescriptionKey: "services.02.homeDescription",
     defaultHomeDescription: "The smart choice for large volumes",
-    image: "/images/services/service-02-offest.jpg",
+    image: "/images/services/service-02.jpg",
   },
   {
     id: '03',
@@ -46,7 +46,7 @@ const servicesData = [
     defaultTitle: "Promotional & Gift Printing",
     homeDescriptionKey: "services.04.homeDescription",
     defaultHomeDescription: "Custom gifts that strengthen client loyalty",
-    image: "/images/services/service-04-gift.jpg",
+    image: "/images/services/service-04.png",
   },
   {
     id: '05',
@@ -54,7 +54,7 @@ const servicesData = [
     defaultTitle: "Packaging & Finishing",
     homeDescriptionKey: "services.05.homeDescription",
     defaultHomeDescription: "Innovative packaging that adds value",
-    image: "/images/services/service-05.jpg",
+    image: "/images/services/service-05.png",
   },
   {
     id: '06',
@@ -78,7 +78,7 @@ const servicesData = [
     defaultTitle: "Exhibition & Event Branding",
     homeDescriptionKey: "services.08.homeDescription",
     defaultHomeDescription: "Complete solutions for booths & displays",
-    image: "/images/our-vision.jpg", // Updated image
+    image: "/images/services/service-08.jpg", // Updated image
   },
   {
     id: '09',
