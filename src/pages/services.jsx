@@ -279,13 +279,13 @@ export default function Services() {
       id: '08',
       title: "Exhibition & Event Branding",
       description: "Complete solutions for booths & displays. Custom design and execution of exhibition booths, roll-ups, promotional tables, branded backgrounds, and full on-site setup with lighting and visual effects.",
-      image: "/images/services/service-08.jpg", // Updated image
+      image: "/images/services/service-08.jpg", 
     },
     {
       id: '09',
       title: "Custom Solutions",
       description: "Free consultations to help you choose the best printing options for your budget. We handle special orders for schools, businesses, and government entities, with the flexibility to combine services into one integrated project.",
-      image: "/images/larg-format-printing.png", // Updated image
+      image: "/images/larg-format-printing.png", 
     }
   ];
 
